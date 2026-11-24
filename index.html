@@ -60,7 +60,27 @@
         .hud-top-left { position: absolute; top: 20px; left: 20px; background: rgba(15, 5, 10, 0.9); border: 2px solid #ff3838; color: #ff3838; font-size: 16px; font-weight: bold; padding: 10px 18px; border-radius: 10px; pointer-events: auto; }
         .hud-top-right { position: absolute; top: 20px; right: 20px; background: rgba(120, 0, 0, 0.9); border: 2px solid #ff0000; color: #fff; font-size: 14px; font-weight: bold; padding: 10px 18px; border-radius: 10px; }
         #event-alert { position: absolute; top: 90px; width: 100%; text-align: center; color: #ff0000; font-size: 24px; font-weight: bold; display: none; text-shadow: 3px 3px 10px #000; }
-        
+
+        #dpad-controls {
+            position: absolute; bottom: 24px; right: 24px;
+            display: grid; grid-template-columns: 56px 56px 56px; grid-template-rows: 56px 56px;
+            gap: 8px; pointer-events: auto; z-index: 60;
+        }
+        .pad-btn {
+            background: rgba(20, 10, 20, 0.85); color: #fff;
+            border: 2px solid #ff3838; border-radius: 10px;
+            font-size: 20px; font-weight: 900; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+        }
+        .pad-btn:active, .pad-btn.active-key {
+            background: #ff3838; transform: scale(0.95);
+        }
+        #pad-up { grid-column: 2; grid-row: 1; }
+        #pad-left { grid-column: 1; grid-row: 2; }
+        #pad-down { grid-column: 2; grid-row: 2; }
+        #pad-right { grid-column: 3; grid-row: 2; }
+
         #win-screen {
             position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(5, 0, 5, 0.96); display: none; flex-direction: column;
@@ -81,7 +101,7 @@
                 <div class="subtitle">ULTIMATE MASTERPIECE 2026</div>
             </div>
             <div class="rules-box">
-                💀 <b>MASTERPIECE RULES:</b> Visit the <b>Shop & Garage</b> to buy/select bikes, or run on foot! Explore Building Interiors (Presets 1 to 4). Earn +6 Coins per Escape. Beware of the Weather-Changing Enemy! Press <b>'E'</b> to Dismount/Sit on Bike.
+                💀 <b>MASTERPIECE RULES:</b> Visit the <b>Shop & Garage</b> to buy/select bikes, or run on foot! Explore Building Interiors (Presets 1 to 4). Earn +6 Coins per Escape. Beware of the Weather-Changing Enemy! Use <b>WASD</b> or <b>UP / DOWN / LEFT / RIGHT</b> (Arrow Keys) and press <b>'E'</b> to Dismount/Sit on Bike.
             </div>
             <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: center;">
                 <button class="btn-action" onclick="goToShop()">SHOP & GARAGE</button>
@@ -166,6 +186,13 @@
         <div class="hud-top-left" id="key-hud">🔑 Golden Key: SEARCHING... | 🪙 Coins: <span id="coin-cnt">0</span> | Status: <span id="bike-status">On Vehicle</span></div>
         <div class="hud-top-right">DIPU REMAKE 2026</div>
         <div id="event-alert">⚠️ ENEMY CHANGED WEATHER & TELEPORTED! ⚠️</div>
+
+        <div id="dpad-controls" aria-label="Directional Controls">
+            <button type="button" class="pad-btn" id="pad-up" title="Up (W / ArrowUp)">↑</button>
+            <button type="button" class="pad-btn" id="pad-left" title="Left (A / ArrowLeft)">←</button>
+            <button type="button" class="pad-btn" id="pad-down" title="Down (S / ArrowDown)">↓</button>
+            <button type="button" class="pad-btn" id="pad-right" title="Right (D / ArrowRight)">→</button>
+        </div>
     </div>
 
     <script>
@@ -239,7 +266,7 @@
         ground.receiveShadow = true;
         scene.add(ground);
 
-        // --- CLEAN BUILDINGS (No weird planks) ---
+        // --- CLEAN BUILDINGS ---
         const buildingObjects = [];
 
         function createCleanBuilding(x, z, w, h, d) {
@@ -250,7 +277,6 @@
             body.castShadow = true; body.receiveShadow = true;
             group.add(body);
 
-            // Clean multi-floors for interior exploration
             for (let fy = 12; fy < h - 4; fy += 12) {
                 const floorMat = new THREE.MeshStandardMaterial({ color: 0x331a1a, roughness: 0.3 });
                 const balcony = new THREE.Mesh(new THREE.BoxGeometry(w + 2, 1.2, d + 2), floorMat);
@@ -317,7 +343,6 @@
 
         scene.add(playerGroup);
 
-        // If player chose foot walk from shop
         if (!isOnVehicle) {
             bikeBody.visible = false;
             charMesh.visible = true;
@@ -337,16 +362,31 @@
         enemyGroup.position.set(0, 0, -180);
         scene.add(enemyGroup);
 
-        // --- CONTROLS ---
+        // --- CONTROLS: WASD + UP / DOWN / LEFT / RIGHT + ON-SCREEN PAD ---
         const keys = { up: false, down: false, left: false, right: false };
+
+        function setDirection(dir, isPressed) {
+            keys[dir] = isPressed;
+            const btnMap = {
+                up: 'pad-up',
+                down: 'pad-down',
+                left: 'pad-left',
+                right: 'pad-right'
+            };
+            const btn = document.getElementById(btnMap[dir]);
+            if (btn) btn.classList.toggle('active-key', isPressed);
+        }
+
         window.addEventListener('keydown', (e) => {
             const k = e.key.toLowerCase();
-            if (k === 'w' || k === 'arrowup') keys.up = true;
-            if (k === 's' || k === 'arrowdown') keys.down = true;
-            if (k === 'a' || k === 'arrowleft') keys.left = true;
-            if (k === 'd' || k === 'arrowright') keys.right = true;
-            
-            // Toggle Dismount / Sit with 'E' key
+            if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(k)) {
+                e.preventDefault();
+            }
+            if (k === 'w' || k === 'arrowup') setDirection('up', true);
+            if (k === 's' || k === 'arrowdown') setDirection('down', true);
+            if (k === 'a' || k === 'arrowleft') setDirection('left', true);
+            if (k === 'd' || k === 'arrowright') setDirection('right', true);
+
             if (k === 'e' && gameActive && selectedVehicle !== 'foot') {
                 isOnVehicle = !isOnVehicle;
                 bikeBody.visible = isOnVehicle;
@@ -354,12 +394,26 @@
                 document.getElementById('bike-status').innerText = isOnVehicle ? "On Vehicle" : "Walking on Foot";
             }
         });
+
         window.addEventListener('keyup', (e) => {
             const k = e.key.toLowerCase();
-            if (k === 'w' || k === 'arrowup') keys.up = false;
-            if (k === 's' || k === 'arrowdown') keys.down = false;
-            if (k === 'a' || k === 'arrowleft') keys.left = false;
-            if (k === 'd' || k === 'arrowright') keys.right = false;
+            if (k === 'w' || k === 'arrowup') setDirection('up', false);
+            if (k === 's' || k === 'arrowdown') setDirection('down', false);
+            if (k === 'a' || k === 'arrowleft') setDirection('left', false);
+            if (k === 'd' || k === 'arrowright') setDirection('right', false);
+        });
+
+        ['up', 'down', 'left', 'right'].forEach((dir) => {
+            const btn = document.getElementById(`pad-${dir}`);
+            ['pointerdown', 'mousedown', 'touchstart'].forEach((ev) => {
+                btn.addEventListener(ev, (e) => {
+                    e.preventDefault();
+                    setDirection(dir, true);
+                });
+            });
+            ['pointerup', 'pointerleave', 'pointercancel', 'mouseup', 'touchend'].forEach((ev) => {
+                btn.addEventListener(ev, () => setDirection(dir, false));
+            });
         });
 
         let pAngle = 0;
