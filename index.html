@@ -3,36 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deepesh Meena Remake — Ultimate Escape</title>
+  <title>Deepesh Meena Remake 2026 — 3D Escape</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
     body {
-      background: #090d16; color: #fff; overflow: hidden;
+      background: #070b14; color: #fff; overflow: hidden;
+      width: 100vw; height: 100vh; user-select: none;
+    }
+    .screen {
+      position: fixed; inset: 0; z-index: 25;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      height: 100vh; user-select: none;
+      background: radial-gradient(circle at top, #1e293b 0%, #070b14 75%);
+      text-align: center; padding: 20px;
     }
-    #brandBanner {
-      position: fixed; top: 54px; left: 50%; transform: translateX(-50%);
-      background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(250, 204, 21, 0.35);
-      color: #fde047; padding: 4px 14px; border-radius: 999px; font-size: 12px;
-      font-weight: 700; letter-spacing: 0.5px; pointer-events: none; z-index: 9;
+    .hidden { display: none !important; }
+    .badge {
+      background: rgba(250, 204, 21, 0.14); border: 1px solid rgba(250, 204, 21, 0.45);
+      color: #fde047; padding: 6px 16px; border-radius: 999px;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.8px; margin-bottom: 14px;
     }
-    #hud {
-      position: fixed; top: 10px; left: 10px; right: 10px;
-      display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center;
-      pointer-events: none; z-index: 10;
+    h1 {
+      font-size: clamp(30px, 6vw, 54px); font-weight: 900; letter-spacing: 1px;
+      background: linear-gradient(90deg, #38bdf8, #facc15, #f97316);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
     }
-    .pill {
-      background: rgba(15, 23, 42, 0.88); border: 1px solid rgba(255,255,255,0.16);
-      padding: 7px 13px; border-radius: 999px; font-size: 13px; backdrop-filter: blur(6px);
-    }
-    .controls-bar {
-      position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; z-index: 10;
-    }
+    .sub { color: #cbd5e1; max-width: 560px; font-size: 15px; margin-bottom: 24px; line-height: 1.5; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
     button {
-      background: #2563eb; color: #fff; border: none; padding: 8px 13px;
-      border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;
+      background: #2563eb; color: #fff; border: none; padding: 11px 20px;
+      border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 14px;
       transition: transform 0.08s ease, background 0.15s ease;
     }
     button:hover:not(:disabled) { background: #1d4ed8; }
@@ -40,54 +40,105 @@
     button:disabled { opacity: 0.45; cursor: not-allowed; }
     button.secondary { background: #334155; }
     button.secondary:hover:not(:disabled) { background: #475569; }
-    button.active-diff { background: #16a34a; }
+    button.green { background: #16a34a; }
+    button.green:hover:not(:disabled) { background: #15803d; }
+    button.selected-diff { outline: 3px solid #facc15; background: #16a34a; }
+
+    #hud {
+      position: fixed; top: 10px; left: 10px; right: 10px; z-index: 10;
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center;
+      pointer-events: none;
+    }
+    .pill {
+      background: rgba(15, 23, 42, 0.84); border: 1px solid rgba(255,255,255,0.16);
+      padding: 7px 14px; border-radius: 999px; font-size: 13px; backdrop-filter: blur(6px);
+    }
+    #helpBar {
+      position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 10;
+      background: rgba(15, 23, 42, 0.84); border: 1px solid rgba(255,255,255,0.14);
+      padding: 8px 16px; border-radius: 999px; font-size: 12px; color: #e2e8f0;
+      white-space: nowrap; pointer-events: none;
+    }
     #toast {
-      position: fixed; top: 82px; left: 50%; transform: translateX(-50%);
-      background: rgba(239, 68, 68, 0.92); color: #fff; padding: 6px 14px;
-      border-radius: 8px; font-size: 13px; font-weight: 600; display: none; z-index: 15;
+      position: fixed; top: 58px; left: 50%; transform: translateX(-50%); z-index: 15;
+      background: rgba(239, 68, 68, 0.94); color: #fff; padding: 7px 16px;
+      border-radius: 9px; font-size: 13px; font-weight: 700; display: none;
     }
     #shopModal {
       display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78);
-      z-index: 20; align-items: center; justify-content: center;
+      z-index: 35; align-items: center; justify-content: center;
     }
     #shopBox {
       background: #1e293b; border: 1px solid #475569; border-radius: 14px;
-      padding: 20px; width: min(92vw, 470px);
+      padding: 20px; width: min(92vw, 480px); text-align: left;
     }
     .item-row {
       display: flex; justify-content: space-between; align-items: center;
       background: #0f172a; padding: 10px 12px; border-radius: 8px; margin-top: 10px;
     }
-    canvas {
-      display: block; border: 2px solid #334155; border-radius: 10px;
-      background: #1f2937; max-width: 96vw; max-height: 76vh;
+    #endOverlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78);
+      z-index: 20; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 20px;
     }
+    canvas { display: block; width: 100vw; height: 100vh; }
   </style>
 </head>
 <body>
-  <div id="hud">
+  <!-- 1. Start Screen -->
+  <div id="startScreen" class="screen">
+    <div class="badge">⚡ 3D EDITION • DEEPESH MEENA REMAKE 2026</div>
+    <h1>DEEPESH MEENA REMAKE 2026</h1>
+    <p class="sub">
+      3D एरिना में कॉइन्स इकट्ठा करो, लावा के गड्ढों और घोस्ट से बचो, हर 10 सेकंड में मैप शफल होता है, और नई बाइक व सुपरकार अनलॉक करो!
+    </p>
+    <div class="btn-row">
+      <button class="green" onclick="goToDifficulty()">▶ Play Now</button>
+      <button class="secondary" onclick="toggleShop()">🛒 Garage</button>
+    </div>
+  </div>
+
+  <!-- 2. Difficulty Screen -->
+  <div id="diffScreen" class="screen hidden">
+    <div class="badge">🎯 SELECT DIFFICULTY</div>
+    <h1 style="font-size: clamp(26px, 5vw, 42px);">अपना लेवल चुनें</h1>
+    <p class="sub">डिफिकल्टी के हिसाब से कॉइन्स टारगेट, लावा के गड्ढे और घोस्ट की स्पीड बदलेगी।</p>
+    <div class="btn-row" style="margin-bottom: 24px;">
+      <button id="diff-easy" class="secondary selected-diff" onclick="pickDiff('easy')">Easy (6 Coins)</button>
+      <button id="diff-medium" class="secondary" onclick="pickDiff('medium')">Medium (12 Coins)</button>
+      <button id="diff-hard" class="secondary" onclick="pickDiff('hard')">Hard (18 Coins)</button>
+    </div>
+    <div class="btn-row">
+      <button class="green" onclick="startMission()">🚀 Start Mission</button>
+      <button class="secondary" onclick="goToStart()">⬅ Back</button>
+    </div>
+  </div>
+
+  <!-- 3. 3D Game HUD -->
+  <div id="hud" class="hidden">
     <div class="pill">🪙 Coins: <strong id="coinCount">0</strong> | 🎯 Target: <strong id="targetCount">0/6</strong></div>
-    <div class="pill">🚗 Vehicle: <strong id="vehName">Street Bike</strong> (<span id="boardStatus">Riding — Press E</span>)</div>
-    <div class="pill">🌗 Time: <strong id="timeLabel">Morning</strong> (Press T) | 👻 Shuffle in: <strong id="shuffleTimer">10s</strong></div>
+    <div class="pill">🚗 Vehicle: <strong id="vehName">Street Bike</strong> (<span id="boardStatus">Riding</span>)</div>
+    <div class="pill">🌗 Time: <strong id="timeLabel">Morning</strong> (T) | 👻 Shuffle: <strong id="shuffleTimer">10s</strong></div>
   </div>
 
-  <div id="brandBanner">⚡ DEEPESH MEENA REMAKE • WASD/Arrows | E: Ride/Exit | Space: Jump | T: Time</div>
   <div id="toast">👻 घोस्ट ने मैप शफल कर दिया!</div>
+  <div id="helpBar" class="hidden">WASD / Arrows: Move | E: Ride/Exit | Space: Jump | T: Time</div>
 
-  <canvas id="game" width="960" height="600"></canvas>
-
-  <div class="controls-bar">
-    <button id="btn-easy" class="secondary active-diff" onclick="setDifficulty('easy')">Easy (6 Coins)</button>
-    <button id="btn-medium" class="secondary" onclick="setDifficulty('medium')">Medium (12 Coins)</button>
-    <button id="btn-hard" class="secondary" onclick="setDifficulty('hard')">Hard (18 Coins)</button>
-    <button onclick="toggleShop()">🛒 Garage & Shop</button>
-    <button class="secondary" onclick="resetGame()">🔄 Restart</button>
+  <!-- Game Over / Win Overlay -->
+  <div id="endOverlay">
+    <h2 id="endTitle" style="font-size: 36px; margin-bottom: 10px;">Game Over</h2>
+    <p id="endDesc" style="color: #cbd5e1; margin-bottom: 20px;">फिर से कोशिश करो!</p>
+    <div class="btn-row">
+      <button class="green" onclick="startMission()">🔄 Play Again</button>
+      <button class="secondary" onclick="goToDifficulty()">🎯 Change Difficulty</button>
+    </div>
   </div>
 
+  <!-- Garage Modal -->
   <div id="shopModal">
     <div id="shopBox">
-      <h3>🚗 Vehicles Garage — Deepesh Meena</h3>
-      <p style="font-size:13px;color:#cbd5e1;margin-top:4px;">कॉइन्स जमा करके तेज़ बाइक और सुपरकार खरीदें!</p>
+      <h3>🚗 3D Garage — Deepesh Meena Remake 2026</h3>
+      <p style="font-size:13px;color:#cbd5e1;margin-top:4px;">कॉइन्स जमा करके तेज़ बाइक और सुपरकार चलाओ!</p>
       <div id="shopList"></div>
       <div style="margin-top:14px;text-align:right;">
         <button class="secondary" onclick="toggleShop()">Close</button>
@@ -95,24 +146,25 @@
     </div>
   </div>
 
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
   <script>
-    const canvas = document.getElementById('game');
-    const ctx = canvas.getContext('2d');
-
     const VEHICLES = [
-      { id: 'bike', name: 'Street Bike', type: 'bike', cost: 0, speed: 4.8, color: '#38bdf8' },
-      { id: 'sportbike', name: 'Turbo Bike', type: 'bike', cost: 6, speed: 6.4, color: '#f97316' },
-      { id: 'gtcar', name: 'Drift GT Car', type: 'car', cost: 10, speed: 7.2, color: '#a855f7' },
-      { id: 'lambo', name: 'Lamborghini V12', type: 'car', cost: 16, speed: 8.6, color: '#eab308' }
+      { id: 'bike', name: 'Street Bike', type: 'bike', cost: 0, speed: 12, color: 0x38bdf8 },
+      { id: 'sportbike', name: 'Turbo Bike', type: 'bike', cost: 6, speed: 16, color: 0xf97316 },
+      { id: 'gtcar', name: 'Drift GT Car', type: 'car', cost: 10, speed: 18.5, color: 0xa855f7 },
+      { id: 'lambo', name: 'Lamborghini V12', type: 'car', cost: 16, speed: 22.5, color: 0xeab308 }
     ];
 
     const TIMES = [
-      { name: 'Morning', tint: 'rgba(255, 244, 180, 0.08)', road: '#374151', grass: '#166534' },
-      { name: 'Evening', tint: 'rgba(251, 146, 60, 0.20)', road: '#292524', grass: '#14532d' },
-      { name: 'Night', tint: 'rgba(15, 23, 42, 0.48)', road: '#1e293b', grass: '#052e16' }
+      { name: 'Morning', bg: 0x38bdf8, fog: 0x7dd3fc, amb: 0.9, dir: 1.1, ground: 0x15803d },
+      { name: 'Evening', bg: 0x7c2d12, fog: 0xea580c, amb: 0.6, dir: 0.85, ground: 0x14532d },
+      { name: 'Night', bg: 0x050816, fog: 0x0f172a, amb: 0.35, dir: 0.45, ground: 0x052e16 }
     ];
 
-    let state = {
+    const ARENA_HALF = 36;
+
+    const state = {
+      screen: 'start',
       difficulty: 'easy',
       coins: 0,
       collected: 0,
@@ -122,153 +174,232 @@
       onVehicle: true,
       timeIndex: 0,
       shuffleCountdown: 10,
-      gameOver: false,
-      won: false,
-      failReason: '',
-      player: { x: 120, y: 120, r: 12, z: 0, vz: 0 },
-      ghost: { x: 820, y: 480, r: 16, speed: 1.5 },
-      coinItems: [],
-      lavaPits: [],
-      npcs: []
+      running: false,
+      player: { x: -16, z: -16, y: 0, vy: 0, yaw: 0 },
+      ghost: { x: 20, z: 20, speed: 4.2 },
+      coins3D: [],
+      lavas3D: []
     };
 
-    let toastTimeout = null;
+    // Three.js Setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 250);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    document.body.prepend(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+    scene.add(ambientLight);
+    const dirLight = new THREE.DirectionalLight(0xfffbeb, 1.1);
+    dirLight.position.set(25, 45, 25);
+    dirLight.castShadow = true;
+    scene.add(dirLight);
+
+    // Ground & Roads
+    const groundGeo = new THREE.PlaneGeometry(ARENA_HALF * 2, ARENA_HALF * 2);
+    const groundMat = new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.9 });
+    const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+    groundMesh.rotation.x = -Math.PI / 2;
+    groundMesh.receiveShadow = true;
+    scene.add(groundMesh);
+
+    const roadMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.8 });
+    const roadX = new THREE.Mesh(new THREE.BoxGeometry(ARENA_HALF * 2, 0.08, 8), roadMat);
+    roadX.position.y = 0.04;
+    roadX.receiveShadow = true;
+    scene.add(roadX);
+
+    const roadZ = new THREE.Mesh(new THREE.BoxGeometry(8, 0.08, ARENA_HALF * 2), roadMat);
+    roadZ.position.y = 0.04;
+    roadZ.receiveShadow = true;
+    scene.add(roadZ);
+
+    // Player + Vehicle Group
+    const playerGroup = new THREE.Group();
+    const bodyMesh = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.65, 0.65, 2.0, 16),
+      new THREE.MeshStandardMaterial({ color: 0x22c55e })
+    );
+    bodyMesh.position.y = 1.0;
+    bodyMesh.castShadow = true;
+    playerGroup.add(bodyMesh);
+
+    const vehicleMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(2.2, 1.1, 4.2),
+      new THREE.MeshStandardMaterial({ color: 0x38bdf8, metalness: 0.4, roughness: 0.3 })
+    );
+    vehicleMesh.position.y = 0.65;
+    vehicleMesh.castShadow = true;
+    playerGroup.add(vehicleMesh);
+    scene.add(playerGroup);
+
+    // Ghost 3D Mesh
+    const ghostMesh = new THREE.Mesh(
+      new THREE.ConeGeometry(1.3, 2.8, 16),
+      new THREE.MeshStandardMaterial({ color: 0xf8fafc, emissive: 0x94a3b8, emissiveIntensity: 0.35 })
+    );
+    ghostMesh.position.y = 1.4;
+    scene.add(ghostMesh);
+
+    const coinGeo = new THREE.CylinderGeometry(0.9, 0.9, 0.25, 18);
+    const coinMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, emissive: 0xca8a04, emissiveIntensity: 0.35 });
+    const lavaGeo = new THREE.CylinderGeometry(3.2, 3.6, 0.2, 20);
+    const lavaMat = new THREE.MeshStandardMaterial({ color: 0xef4444, emissive: 0xdc2626, emissiveIntensity: 0.6 });
+
+    function applyTimeTheme() {
+      const t = TIMES[state.timeIndex];
+      scene.background = new THREE.Color(t.bg);
+      scene.fog = new THREE.FogExp2(t.fog, 0.012);
+      ambientLight.intensity = t.amb;
+      dirLight.intensity = t.dir;
+      groundMat.color.setHex(t.ground);
+      updateHud();
+    }
+
+    function applyVehicleAppearance() {
+      const v = VEHICLES.find(item => item.id === state.equippedVehicle) || VEHICLES[0];
+      vehicleMesh.visible = state.onVehicle;
+      vehicleMesh.material.color.setHex(v.color);
+      if (v.type === 'car') {
+        vehicleMesh.scale.set(1.15, 1.05, 1.1);
+      } else {
+        vehicleMesh.scale.set(0.65, 0.95, 0.85);
+      }
+      updateHud();
+    }
+
+    function clearWorldEntities() {
+      state.coins3D.forEach(c => scene.remove(c.mesh));
+      state.lavas3D.forEach(l => scene.remove(l.mesh));
+      state.coins3D = [];
+      state.lavas3D = [];
+    }
+
+    function randomCoord(margin = 6) {
+      return (Math.random() * 2 - 1) * (ARENA_HALF - margin);
+    }
+
+    function populateWorld() {
+      clearWorldEntities();
+      for (let i = 0; i < state.targetCoins; i++) {
+        const mesh = new THREE.Mesh(coinGeo, coinMat);
+        mesh.rotation.x = Math.PI / 2;
+        mesh.position.set(randomCoord(5), 1.1, randomCoord(5));
+        mesh.castShadow = true;
+        scene.add(mesh);
+        state.coins3D.push({ mesh, taken: false });
+      }
+
+      const lavaCount = state.difficulty === 'easy' ? 5 : state.difficulty === 'medium' ? 8 : 12;
+      let attempts = 0;
+      while (state.lavas3D.length < lavaCount && attempts < 250) {
+        attempts++;
+        const x = randomCoord(8);
+        const z = randomCoord(8);
+        const distPlayer = Math.hypot(x - state.player.x, z - state.player.z);
+        const distLava = state.lavas3D.every(l => Math.hypot(x - l.mesh.position.x, z - l.mesh.position.z) > 8.5);
+        if (distPlayer > 11 && distLava) {
+          const mesh = new THREE.Mesh(lavaGeo, lavaMat);
+          mesh.position.set(x, 0.12, z);
+          scene.add(mesh);
+          state.lavas3D.push({ mesh });
+        }
+      }
+    }
+
+    let toastTimer = null;
     function showToast(msg) {
       const el = document.getElementById('toast');
       el.textContent = msg;
       el.style.display = 'block';
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => { el.style.display = 'none'; }, 2200);
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { el.style.display = 'none'; }, 2200);
     }
 
-    const keys = {};
-    window.addEventListener('keydown', (e) => {
-      if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(e.key.toLowerCase())) {
-        e.preventDefault();
-      }
-      const k = e.key.toLowerCase();
-      if (!keys[k]) {
-        if (k === 'e') toggleVehicle();
-        if (k === ' ') jumpPlayer();
-        if (k === 't') cycleTime();
-      }
-      keys[k] = true;
-    });
-    window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
-
-    function getCurrentVehicle() {
-      return VEHICLES.find(v => v.id === state.equippedVehicle) || VEHICLES[0];
-    }
-
-    function toggleVehicle() {
-      if (state.gameOver || state.won) return;
-      state.onVehicle = !state.onVehicle;
-      updateHud();
-    }
-
-    function jumpPlayer() {
-      if (!state.gameOver && !state.won && state.player.z === 0) {
-        state.player.vz = 6.8;
-      }
-    }
-
-    function cycleTime() {
-      state.timeIndex = (state.timeIndex + 1) % TIMES.length;
-      updateHud();
-    }
-
-    function setDifficulty(diff) {
-      state.difficulty = diff;
-      state.targetCoins = diff === 'easy' ? 6 : diff === 'medium' ? 12 : 18;
-      ['easy', 'medium', 'hard'].forEach(d => {
-        document.getElementById(`btn-${d}`).classList.toggle('active-diff', d === diff);
-      });
-      resetGame();
-    }
-
-    function randPos(margin = 65) {
-      return {
-        x: margin + Math.random() * (canvas.width - margin * 2),
-        y: margin + Math.random() * (canvas.height - margin * 2)
-      };
-    }
-
-    function spawnWorldItems() {
-      state.coinItems = [];
-      for (let i = 0; i < state.targetCoins; i++) {
-        const p = randPos(50);
-        state.coinItems.push({ x: p.x, y: p.y, r: 9, taken: false });
-      }
-
-      const lavaCount = state.difficulty === 'easy' ? 5 : state.difficulty === 'medium' ? 8 : 12;
-      state.lavaPits = [];
-      let attempts = 0;
-      while (state.lavaPits.length < lavaCount && attempts < 200) {
-        attempts++;
-        const p = randPos(90);
-        const farFromPlayer = Math.hypot(p.x - state.player.x, p.y - state.player.y) > 125;
-        const farFromOtherLava = state.lavaPits.every(l => Math.hypot(p.x - l.x, p.y - l.y) > 75);
-        if (farFromPlayer && farFromOtherLava) {
-          state.lavaPits.push({ x: p.x, y: p.y, r: 28 });
-        }
-      }
-    }
-
-    function spawnNpcs() {
-      state.npcs = [];
-      for (let i = 0; i < 12; i++) {
-        const p = randPos(45);
-        const angle = Math.random() * Math.PI * 2;
-        state.npcs.push({
-          x: p.x, y: p.y, r: 8,
-          vx: Math.cos(angle) * 1.15,
-          vy: Math.sin(angle) * 1.15
-        });
-      }
-    }
-
-    function shuffleMapByGhost() {
-      state.coinItems.forEach(c => {
+    function shuffleMap() {
+      state.coins3D.forEach(c => {
         if (!c.taken) {
-          const p = randPos(50);
-          c.x = p.x; c.y = p.y;
+          c.mesh.position.x = randomCoord(5);
+          c.mesh.position.z = randomCoord(5);
         }
       });
-      state.lavaPits.forEach(l => {
-        for (let i = 0; i < 30; i++) {
-          const p = randPos(90);
-          if (Math.hypot(p.x - state.player.x, p.y - state.player.y) > 110) {
-            l.x = p.x; l.y = p.y;
+      state.lavas3D.forEach(l => {
+        for (let i = 0; i < 25; i++) {
+          const x = randomCoord(8);
+          const z = randomCoord(8);
+          if (Math.hypot(x - state.player.x, z - state.player.z) > 10) {
+            l.mesh.position.x = x;
+            l.mesh.position.z = z;
             break;
           }
         }
       });
       state.shuffleCountdown = 10;
-      showToast('👻 घोस्ट ने कॉइन्स और लावा के गड्ढे शफल कर दिए!');
+      showToast('👻 घोस्ट ने 3D मैप में कॉइन्स और लावा शफल कर दिए!');
     }
 
-    function resetGame() {
+    function goToStart() {
+      state.screen = 'start';
+      state.running = false;
+      document.getElementById('startScreen').classList.remove('hidden');
+      document.getElementById('diffScreen').classList.add('hidden');
+      document.getElementById('hud').classList.add('hidden');
+      document.getElementById('helpBar').classList.add('hidden');
+      document.getElementById('endOverlay').style.display = 'none';
+    }
+
+    function goToDifficulty() {
+      state.screen = 'diff';
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('diffScreen').classList.remove('hidden');
+    }
+
+    function pickDiff(diff) {
+      state.difficulty = diff;
+      state.targetCoins = diff === 'easy' ? 6 : diff === 'medium' ? 12 : 18;
+      ['easy', 'medium', 'hard'].forEach(d => {
+        document.getElementById(`diff-${d}`).classList.toggle('selected-diff', d === diff);
+      });
+    }
+
+    function startMission() {
+      state.screen = 'game';
       state.collected = 0;
-      state.gameOver = false;
-      state.won = false;
-      state.failReason = '';
-      state.onVehicle = true;
       state.shuffleCountdown = 10;
-      state.player = { x: 120, y: 120, r: 12, z: 0, vz: 0 };
+      state.onVehicle = true;
+      state.running = true;
+      state.player = { x: -16, z: -16, y: 0, vy: 0, yaw: 0 };
       state.ghost = {
-        x: 820, y: 480, r: 16,
-        speed: state.difficulty === 'easy' ? 1.5 : state.difficulty === 'medium' ? 2.05 : 2.6
+        x: 20, z: 20,
+        speed: state.difficulty === 'easy' ? 4.2 : state.difficulty === 'medium' ? 5.6 : 7.0
       };
-      spawnWorldItems();
-      spawnNpcs();
+
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('diffScreen').classList.add('hidden');
+      document.getElementById('endOverlay').style.display = 'none');
+      document.getElementById('hud').classList.remove('hidden');
+      document.getElementById('helpBar').classList.remove('hidden');
+
+      populateWorld();
+      applyTimeTheme();
+      applyVehicleAppearance();
       updateHud();
+    }
+
+    function finishGame(won, reason) {
+      state.running = false;
+      const overlay = document.getElementById('endOverlay');
+      document.getElementById('endTitle').textContent = won ? '🎉 Mission Clear! Deepesh Meena Remake 2026!' : '💀 Game Over!';
+      document.getElementById('endDesc').textContent = reason;
+      overlay.style.display = 'flex';
     }
 
     function toggleShop() {
       const modal = document.getElementById('shopModal');
-      const isOpen = modal.style.display === 'flex';
-      modal.style.display = isOpen ? 'none' : 'flex';
-      if (!isOpen) renderShop();
+      const open = modal.style.display === 'flex';
+      modal.style.display = open ? 'none' : 'flex';
+      if (!open) renderShop();
     }
 
     function renderShop() {
@@ -294,7 +425,7 @@
           btn.onclick = () => {
             state.equippedVehicle = v.id;
             state.onVehicle = true;
-            updateHud();
+            applyVehicleAppearance();
             renderShop();
           };
         } else {
@@ -306,7 +437,7 @@
               state.ownedVehicles.push(v.id);
               state.equippedVehicle = v.id;
               state.onVehicle = true;
-              updateHud();
+              applyVehicleAppearance();
               renderShop();
             }
           };
@@ -317,202 +448,136 @@
     }
 
     function updateHud() {
-      const veh = getCurrentVehicle();
+      const v = VEHICLES.find(item => item.id === state.equippedVehicle) || VEHICLES[0];
       document.getElementById('coinCount').textContent = state.coins;
       document.getElementById('targetCount').textContent = `${state.collected}/${state.targetCoins}`;
-      document.getElementById('vehName').textContent = veh.name;
-      document.getElementById('boardStatus').textContent = state.onVehicle ? 'Riding (E: Exit)' : 'On Foot (E: Board)';
+      document.getElementById('vehName').textContent = v.name;
+      document.getElementById('boardStatus').textContent = state.onVehicle ? 'Riding (E: Exit)' : 'On Foot (E: Ride)';
       document.getElementById('timeLabel').textContent = TIMES[state.timeIndex].name;
       document.getElementById('shuffleTimer').textContent = `${Math.max(0, Math.ceil(state.shuffleCountdown))}s`;
     }
 
-    function update(dt) {
-      if (state.gameOver || state.won) return;
-
-      const veh = getCurrentVehicle();
-      const speed = state.onVehicle ? veh.speed : 2.6;
-      let dx = 0, dy = 0;
-      if (keys['w'] || keys['arrowup']) dy -= 1;
-      if (keys['s'] || keys['arrowdown']) dy += 1;
-      if (keys['a'] || keys['arrowleft']) dx -= 1;
-      if (keys['d'] || keys['arrowright']) dx += 1;
-
-      if (dx !== 0 && dy !== 0) {
-        const inv = 1 / Math.SQRT2;
-        dx *= inv; dy *= inv;
-      }
-
-      state.player.x = Math.max(22, Math.min(canvas.width - 22, state.player.x + dx * speed));
-      state.player.y = Math.max(22, Math.min(canvas.height - 22, state.player.y + dy * speed));
-
-      if (state.player.z > 0 || state.player.vz > 0) {
-        state.player.z += state.player.vz;
-        state.player.vz -= 0.36;
-        if (state.player.z <= 0) {
-          state.player.z = 0;
-          state.player.vz = 0;
+    const keys = {};
+    window.addEventListener('keydown', (e) => {
+      const k = e.key.toLowerCase();
+      if (!keys[k] && state.running) {
+        if (k === 'e') {
+          state.onVehicle = !state.onVehicle;
+          applyVehicleAppearance();
+        }
+        if (k === ' ') {
+          e.preventDefault();
+          if (state.player.y <= 0.01) state.player.vy = 11.5;
+        }
+        if (k === 't') {
+          state.timeIndex = (state.timeIndex + 1) % TIMES.length;
+          applyTimeTheme();
         }
       }
+      keys[k] = true;
+    });
+    window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
 
-      state.npcs.forEach(npc => {
-        npc.x += npc.vx;
-        npc.y += npc.vy;
-        if (npc.x < 22 || npc.x > canvas.width - 22) npc.vx *= -1;
-        if (npc.y < 22 || npc.y > canvas.height - 22) npc.vy *= -1;
-      });
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 
-      const gx = state.player.x - state.ghost.x;
-      const gy = state.player.y - state.ghost.y;
-      const gDist = Math.hypot(gx, gy) || 1;
-      state.ghost.x += (gx / gDist) * state.ghost.speed;
-      state.ghost.y += (gy / gDist) * state.ghost.speed;
+    let prev = performance.now();
+    function animate(now) {
+      const dt = Math.min(0.08, (now - prev) / 1000);
+      prev = now;
 
-      state.shuffleCountdown -= dt;
-      if (state.shuffleCountdown <= 0) {
-        shuffleMapByGhost();
-      }
+      if (state.running) {
+        const v = VEHICLES.find(item => item.id === state.equippedVehicle) || VEHICLES[0];
+        const moveSpeed = state.onVehicle ? v.speed : 7.5;
 
-      state.coinItems.forEach(c => {
-        if (!c.taken && Math.hypot(state.player.x - c.x, state.player.y - c.y) < state.player.r + c.r + 5) {
-          c.taken = true;
-          state.coins += 1;
-          state.collected += 1;
-          if (state.collected >= state.targetCoins) {
-            state.won = true;
+        let mx = 0, mz = 0;
+        if (keys['w'] || keys['arrowup']) mz -= 1;
+        if (keys['s'] || keys['arrowdown']) mz += 1;
+        if (keys['a'] || keys['arrowleft']) mx -= 1;
+        if (keys['d'] || keys['arrowright']) mx += 1;
+
+        if (mx !== 0 || mz !== 0) {
+          const len = Math.hypot(mx, mz);
+          mx /= len; mz /= len;
+          state.player.x = Math.max(-ARENA_HALF + 2, Math.min(ARENA_HALF - 2, state.player.x + mx * moveSpeed * dt));
+          state.player.z = Math.max(-ARENA_HALF + 2, Math.min(ARENA_HALF - 2, state.player.z + mz * moveSpeed * dt));
+          playerGroup.rotation.y = Math.atan2(mx, mz);
+        }
+
+        if (state.player.y > 0 || state.player.vy > 0) {
+          state.player.y += state.player.vy * dt;
+          state.player.vy -= 28 * dt;
+          if (state.player.y <= 0) {
+            state.player.y = 0;
+            state.player.vy = 0;
           }
         }
-      });
 
-      if (state.player.z < 6) {
-        for (const l of state.lavaPits) {
-          if (Math.hypot(state.player.x - l.x, state.player.y - l.y) < l.r - 4) {
-            state.gameOver = true;
-            state.failReason = '🔥 लावा के गड्ढे में गिर गए!';
-            break;
+        playerGroup.position.set(state.player.x, state.player.y, state.player.z);
+
+        // Ghost Chase
+        const dx = state.player.x - state.ghost.x;
+        const dz = state.player.z - state.ghost.z;
+        const dist = Math.hypot(dx, dz) || 1;
+        state.ghost.x += (dx / dist) * state.ghost.speed * dt;
+        state.ghost.z += (dz / dist) * state.ghost.speed * dt;
+        ghostMesh.position.set(state.ghost.x, 1.4 + Math.sin(now * 0.005) * 0.35, state.ghost.z);
+
+        // Shuffle Timer
+        state.shuffleCountdown -= dt;
+        if (state.shuffleCountdown <= 0) shuffleMap();
+
+        // Coins
+        state.coins3D.forEach(c => {
+          if (c.taken) return;
+          c.mesh.rotation.z += 2.5 * dt;
+          if (Math.hypot(state.player.x - c.mesh.position.x, state.player.z - c.mesh.position.z) < 2.2) {
+            c.taken = true;
+            c.mesh.visible = false;
+            state.coins += 1;
+            state.collected += 1;
+            if (state.collected >= state.targetCoins) {
+              finishGame(true, `तुमने ${state.targetCoins} कॉइन्स पूरे कर लिए!`);
+            }
+          }
+        });
+
+        // Lava Check (safe if jumping high)
+        if (state.running && state.player.y < 1.2) {
+          for (const l of state.lavas3D) {
+            if (Math.hypot(state.player.x - l.mesh.position.x, state.player.z - l.mesh.position.z) < 3.1) {
+              finishGame(false, '🔥 तुम लावा के गड्ढे में गिर गए!');
+              break;
+            }
           }
         }
-      }
 
-      if (!state.gameOver && Math.hypot(state.player.x - state.ghost.x, state.player.y - state.ghost.y) < state.player.r + state.ghost.r - 3) {
-        state.gameOver = true;
-        state.failReason = '👻 घोस्ट ने पकड़ लिया!';
-      }
-
-      updateHud();
-    }
-
-    function draw() {
-      const time = TIMES[state.timeIndex];
-      ctx.fillStyle = time.grass;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = time.road;
-      ctx.fillRect(0, 250, canvas.width, 90);
-      ctx.fillRect(430, 0, 95, canvas.height);
-
-      ctx.strokeStyle = '#facc15';
-      ctx.setLineDash([16, 14]);
-      ctx.beginPath();
-      ctx.moveTo(0, 295); ctx.lineTo(canvas.width, 295);
-      ctx.moveTo(477, 0); ctx.lineTo(477, canvas.height);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      state.lavaPits.forEach(l => {
-        ctx.fillStyle = '#ef4444';
-        ctx.beginPath();
-        ctx.arc(l.x, l.y, l.r, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = '#fb923c';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-      });
-
-      state.coinItems.forEach(c => {
-        if (c.taken) return;
-        ctx.fillStyle = '#fbbf24';
-        ctx.beginPath();
-        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = '#fef08a';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      });
-
-      state.npcs.forEach(npc => {
-        ctx.fillStyle = '#e2e8f0';
-        ctx.beginPath();
-        ctx.arc(npc.x, npc.y, npc.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      ctx.fillStyle = '#f8fafc';
-      ctx.beginPath();
-      ctx.arc(state.ghost.x, state.ghost.y, state.ghost.r, Math.PI, 0);
-      ctx.lineTo(state.ghost.x + state.ghost.r, state.ghost.y + state.ghost.r);
-      ctx.lineTo(state.ghost.x - state.ghost.r, state.ghost.y + state.ghost.r);
-      ctx.closePath();
-      ctx.fill();
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(state.ghost.x - 6, state.ghost.y - 4, 4, 4);
-      ctx.fillRect(state.ghost.x + 2, state.ghost.y - 4, 4, 4);
-
-      const veh = getCurrentVehicle();
-      const py = state.player.y - state.player.z;
-
-      if (state.player.z > 0) {
-        ctx.fillStyle = 'rgba(0,0,0,0.35)';
-        ctx.beginPath();
-        ctx.ellipse(state.player.x, state.player.y + 8, 14, 7, 0, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      if (state.onVehicle) {
-        ctx.fillStyle = veh.color;
-        if (veh.type === 'car') {
-          ctx.fillRect(state.player.x - 20, py - 12, 40, 24);
-          ctx.fillStyle = '#0f172a';
-          ctx.fillRect(state.player.x - 10, py - 8, 18, 16);
-        } else {
-          ctx.fillRect(state.player.x - 15, py - 7, 30, 14);
+        // Ghost Check
+        if (state.running && Math.hypot(state.player.x - state.ghost.x, state.player.z - state.ghost.z) < 2.2) {
+          finishGame(false, '👻 घोस्ट ने तुम्हें पकड़ लिया!');
         }
-      }
 
-      ctx.fillStyle = '#22c55e';
-      ctx.beginPath();
-      ctx.arc(state.player.x, py, state.player.r, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = time.tint;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      if (state.gameOver || state.won) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#fff';
-        ctx.font = 'bold 34px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(
-          state.won ? '🎉 Level Clear! Deepesh Meena Remake!' : state.failReason || '💀 Game Over!',
-          canvas.width / 2,
-          canvas.height / 2 - 12
+        // Smooth 3D Follow Camera
+        camera.position.lerp(
+          new THREE.Vector3(state.player.x, state.player.y + 13, state.player.z + 16),
+          0.12
         );
-        ctx.font = '16px sans-serif';
-        ctx.fillText('नीचे Restart बटन दबाकर फिर से खेलो', canvas.width / 2, canvas.height / 2 + 26);
+        camera.lookAt(state.player.x, state.player.y + 1, state.player.z);
+        updateHud();
+      } else {
+        camera.position.set(0, 26, 36);
+        camera.lookAt(0, 0, 0);
       }
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
     }
 
-    let lastTime = performance.now();
-    function loop(now) {
-      const dt = Math.min(0.1, (now - lastTime) / 1000);
-      lastTime = now;
-      update(dt);
-      draw();
-      requestAnimationFrame(loop);
-    }
-
-    resetGame();
-    requestAnimationFrame(loop);
+    applyTimeTheme();
+    requestAnimationFrame(animate);
   </script>
 </body>
 </html>
