@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DIPU REMAKE 2026 - WORKING BUTTONS EDITION</title>
     <style>
-        * { box-sizing: border-box; user-select: none; margin: 0; padding: 0; }
-        body { overflow: hidden; background: #000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        * { box-sizing: border-box; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; margin: 0; padding: 0; }
+        body { overflow: hidden; background: #000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; touch-action: none; }
 
         .screen {
             position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -32,22 +32,22 @@
 
         .menu-box {
             position: relative; width: 92%; max-width: 640px; height: 92%; max-height: 760px;
-            border: 4px solid #ff3838; border-radius: 20px; padding: 25px;
+            border: 4px solid #ff3838; border-radius: 20px; padding: 20px;
             display: flex; flex-direction: column; align-items: center; justify-content: space-between;
             box-shadow: inset 0 0 60px rgba(255,0,0,0.8), 0 0 50px rgba(255, 0, 0, 0.5);
-            background: rgba(10, 2, 5, 0.96); color: #fff;
+            background: rgba(10, 2, 5, 0.96); color: #fff; overflow-y: auto;
         }
-        .title-main { font-size: 44px; font-weight: 900; letter-spacing: 5px; color: #ff3838; text-shadow: 4px 4px 0px #000; text-align: center; }
-        .subtitle { font-size: 13px; color: #ffa502; letter-spacing: 3px; font-weight: bold; margin-top: -6px; }
+        .title-main { font-size: clamp(24px, 5vw, 44px); font-weight: 900; letter-spacing: 4px; color: #ff3838; text-shadow: 4px 4px 0px #000; text-align: center; }
+        .subtitle { font-size: clamp(10px, 2vw, 13px); color: #ffa502; letter-spacing: 2px; font-weight: bold; margin-top: 2px; }
 
         .options-panel { width: 100%; display: flex; flex-direction: column; gap: 10px; background: rgba(255,0,0,0.06); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,0,0,0.3); }
-        .option-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; }
+        .option-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; gap: 10px; flex-wrap: wrap; }
         .option-row select { background: #111; color: #ff4757; border: 2px solid #ff3838; padding: 5px 10px; border-radius: 5px; font-weight: bold; cursor: pointer; }
 
         .btn-action {
             background: #ff3838; color: #fff; border: 3px solid #fff;
-            padding: 12px 0; width: 250px; font-size: 22px; font-weight: 900;
-            letter-spacing: 3px; border-radius: 12px; cursor: pointer;
+            padding: 10px 0; width: 230px; max-width: 80%; font-size: clamp(16px, 3vw, 22px); font-weight: 900;
+            letter-spacing: 2px; border-radius: 12px; cursor: pointer;
             box-shadow: 5px 5px 0px #000; text-align: center; transition: 0.2s;
         }
         .btn-action:hover { transform: scale(1.05); background: #ff4d4d; }
@@ -58,33 +58,125 @@
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 50; font-family: sans-serif;
         }
-        .hud-top-left { position: absolute; top: 20px; left: 20px; background: rgba(15, 5, 10, 0.9); border: 2px solid #ff3838; color: #ff3838; font-size: 16px; font-weight: bold; padding: 10px 18px; border-radius: 10px; pointer-events: auto; }
-        .hud-top-right { position: absolute; top: 20px; right: 20px; background: rgba(120, 0, 0, 0.9); border: 2px solid #ff0000; color: #fff; font-size: 14px; font-weight: bold; padding: 10px 18px; border-radius: 10px; }
-        #event-alert { position: absolute; top: 90px; width: 100%; text-align: center; color: #ff0000; font-size: 24px; font-weight: bold; display: none; text-shadow: 3px 3px 10px #000; }
-        
+        .hud-top-left { position: absolute; top: 14px; left: 14px; background: rgba(15, 5, 10, 0.9); border: 2px solid #ff3838; color: #ff3838; font-size: clamp(11px, 2vw, 15px); font-weight: bold; padding: 8px 14px; border-radius: 10px; pointer-events: auto; }
+        .hud-top-right { position: absolute; top: 14px; right: 14px; background: rgba(120, 0, 0, 0.9); border: 2px solid #ff0000; color: #fff; font-size: clamp(11px, 2vw, 14px); font-weight: bold; padding: 8px 14px; border-radius: 10px; }
+        #event-alert { position: absolute; top: 65px; width: 100%; text-align: center; color: #ff0000; font-size: clamp(16px, 3vw, 24px); font-weight: bold; display: none; text-shadow: 3px 3px 10px #000; }
+
+        /* --- MOBILE RIGHT-SIDE CONTROLS (HIDDEN BY DEFAULT, SHOWN ON TOUCH/MOBILE) --- */
+        #mobile-controls {
+            display: none;
+            position: absolute;
+            right: 18px;
+            bottom: 18px;
+            z-index: 80;
+            pointer-events: auto;
+            flex-direction: row;
+            align-items: flex-end;
+            gap: 14px;
+        }
+
+        .mobile-cluster {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-lr-row {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+
+        .m-btn {
+            width: 58px;
+            height: 58px;
+            border-radius: 14px;
+            background: rgba(20, 20, 28, 0.78);
+            border: 2px solid rgba(255, 56, 56, 0.9);
+            color: #fff;
+            font-size: 22px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        .m-btn:active, .m-btn.active-touch {
+            background: rgba(255, 56, 56, 0.85);
+            transform: scale(0.94);
+        }
+
+        .m-btn-bike {
+            width: 52px;
+            height: 40px;
+            font-size: 13px;
+            border-color: #38bdf8;
+            background: rgba(15, 35, 55, 0.8);
+        }
+
+        /* Rotate prompt for portrait phones */
+        #rotate-notice {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            color: #ffa502;
+            z-index: 300;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            gap: 12px;
+        }
+
+        @media (hover: none) and (pointer: coarse), (max-width: 900px) {
+            body.playing-mobile #mobile-controls {
+                display: flex;
+            }
+            @media (orientation: portrait) {
+                body.playing-mobile #rotate-notice {
+                    display: flex;
+                }
+            }
+        }
+
         #win-screen {
             position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(5, 0, 5, 0.96); display: none; flex-direction: column;
             justify-content: center; align-items: center; z-index: 200; color: #2ed573;
-            font-size: 38px; font-weight: 900; letter-spacing: 3px; text-shadow: 0 0 25px #2ed573; text-align: center;
+            font-size: clamp(24px, 5vw, 38px); font-weight: 900; letter-spacing: 3px; text-shadow: 0 0 25px #2ed573; text-align: center;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
+    <!-- ROTATE TO HORIZONTAL NOTICE FOR MOBILE -->
+    <div id="rotate-notice">
+        <div style="font-size: 40px;">🔄📱</div>
+        <div>Please rotate your phone to <b>HORIZONTAL (Landscape)</b> mode for the best experience!</div>
+        <button onclick="document.getElementById('rotate-notice').style.display='none'" style="margin-top: 8px; padding: 8px 16px; border-radius: 8px; border: 2px solid #ffa502; background: #111; color: #fff; font-weight: bold;">Continue Anyway</button>
+    </div>
+
     <!-- SCREEN 1: SPLASH MAIN MENU -->
     <div id="splash-screen" class="screen">
         <div class="menu-box">
             <div style="text-align: center;">
-                <div style="font-size: 45px;">🩸</div>
+                <div style="font-size: 38px;">🩸</div>
                 <div class="title-main">DIPU REMAKE</div>
                 <div class="subtitle">WORKING BUTTONS EDITION 2026</div>
             </div>
             <div class="rules-box">
-                💀 <b>CONTROLS:</b> WASD to Drive/Walk. Press <b>'E'</b> to Dismount/Sit on Bike. Earn +6 Coins per Escape.
+                💀 <b>CONTROLS:</b> PC: WASD / Arrows to Drive/Walk, <b>'E'</b> to Sit/Dismount. Mobile: Horizontal view + Right-side buttons. Earn +6 Coins per Escape.
             </div>
-            <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: center;">
+            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center;">
                 <button class="btn-action" id="btn-shop">SHOP & GARAGE</button>
                 <button class="btn-action" id="btn-play" style="background: #2ed573;">PLAY GAME</button>
             </div>
@@ -95,8 +187,8 @@
     <div id="shop-screen" class="screen">
         <div class="menu-box">
             <div style="text-align: center;">
-                <div style="font-size: 35px;">🛒</div>
-                <div class="title-main" style="font-size: 36px;">BIKE SHOP</div>
+                <div style="font-size: 32px;">🛒</div>
+                <div class="title-main" style="font-size: 34px;">BIKE SHOP</div>
                 <div class="subtitle">CHOOSE YOUR RIDE</div>
             </div>
 
@@ -124,8 +216,8 @@
     <div id="options-screen" class="screen">
         <div class="menu-box">
             <div style="text-align: center;">
-                <div style="font-size: 35px;">⚙️</div>
-                <div class="title-main" style="font-size: 34px;">MISSION PRESETS</div>
+                <div style="font-size: 32px;">⚙️</div>
+                <div class="title-main" style="font-size: 32px;">MISSION PRESETS</div>
                 <div class="subtitle">BUILDING INTERIORS & DIFFICULTY</div>
             </div>
 
@@ -166,6 +258,21 @@
         <div class="hud-top-left" id="key-hud">🔑 Golden Key: SEARCHING... | 🪙 Coins: <span id="coin-cnt">0</span> | Status: <span id="bike-status">On Vehicle</span></div>
         <div class="hud-top-right">DIPU REMAKE 2026</div>
         <div id="event-alert">⚠️ ENEMY CHANGED WEATHER & TELEPORTED! ⚠️</div>
+
+        <!-- MOBILE RIGHT-SIDE CONTROLS: UP/DOWN + LEFT/RIGHT -->
+        <div id="mobile-controls">
+            <div class="mobile-cluster">
+                <button class="m-btn m-btn-bike" id="m-bike" title="Sit / Dismount">BIKE</button>
+                <button class="m-btn" id="m-up" aria-label="Up">▲</button>
+                <button class="m-btn" id="m-down" aria-label="Down">▼</button>
+            </div>
+            <div class="mobile-cluster">
+                <div class="mobile-lr-row">
+                    <button class="m-btn" id="m-left" aria-label="Left">◀</button>
+                    <button class="m-btn" id="m-right" aria-label="Right">▶</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -177,6 +284,23 @@
         let enemySpeed = 0.14;
         let isOnVehicle = true;
 
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+        function applyBikeAppearance() {
+            let bikeColor = 0xff0000;
+            if (selectedVehicle === 'ghost') bikeColor = 0x00ffff;
+            if (selectedVehicle === 'gold') bikeColor = 0xffd700;
+            bikeBody.material.color.setHex(bikeColor);
+        }
+
+        function toggleVehicleState() {
+            if (!gameActive || selectedVehicle === 'foot') return;
+            isOnVehicle = !isOnVehicle;
+            bikeBody.visible = isOnVehicle;
+            charMesh.visible = !isOnVehicle;
+            document.getElementById('bike-status').innerText = isOnVehicle ? "On Vehicle" : "Walking on Foot";
+        }
+
         // --- BUTTON EVENT LISTENERS FIX ---
         document.getElementById('btn-shop').addEventListener('click', () => {
             document.getElementById('splash-screen').style.display = 'none';
@@ -186,6 +310,7 @@
 
         document.getElementById('btn-back-shop').addEventListener('click', () => {
             selectedVehicle = document.getElementById('garage-select').value;
+            applyBikeAppearance();
             document.getElementById('shop-screen').style.display = 'none';
             document.getElementById('splash-screen').style.display = 'flex';
         });
@@ -195,9 +320,10 @@
             document.getElementById('options-screen').style.display = 'flex';
         });
 
-        document.getElementById('btn-start-mission').addEventListener('click', () => {
+        document.getElementById('btn-start-mission').addEventListener('click', async () => {
             const diff = document.getElementById('diff-select').value;
             selectedPreset = document.getElementById('preset-select').value;
+            selectedVehicle = document.getElementById('garage-select').value;
 
             if (diff === 'easy') enemySpeed = 0.08;
             if (diff === 'normal') enemySpeed = 0.12;
@@ -207,11 +333,31 @@
 
             if (selectedVehicle === 'foot') {
                 isOnVehicle = false;
+                bikeBody.visible = false;
+                charMesh.visible = true;
+                document.getElementById('bike-status').innerText = "Walking on Foot";
+            } else {
+                isOnVehicle = true;
+                applyBikeAppearance();
+                bikeBody.visible = true;
+                charMesh.visible = false;
+                document.getElementById('bike-status').innerText = "On Vehicle";
             }
 
             document.getElementById('options-screen').style.display = 'none';
             document.getElementById('hud').style.display = 'block';
             gameActive = true;
+
+            if (isTouchDevice || window.innerWidth <= 900) {
+                document.body.classList.add('playing-mobile');
+                try {
+                    if (screen.orientation && screen.orientation.lock) {
+                        await screen.orientation.lock('landscape');
+                    }
+                } catch (_) {
+                    // Browser may restrict orientation lock without fullscreen
+                }
+            }
         });
 
         // --- THREE.JS SCENE SETUP ---
@@ -222,8 +368,15 @@
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 3500);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.shadowMap.enabled = true;
         document.body.appendChild(renderer.domElement);
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
 
         const ambientLight = new THREE.AmbientLight(0x331111, 0.8);
         scene.add(ambientLight);
@@ -247,7 +400,7 @@
 
         function createInteriorBuilding(x, z, w, h, d) {
             const group = new THREE.Group();
-            
+
             const mat = new THREE.MeshStandardMaterial({ color: 0x1a1a24, roughness: 0.4 });
             const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
             body.position.y = h / 2;
@@ -316,6 +469,7 @@
         charMesh.visible = false;
         playerGroup.add(charMesh);
 
+        playerGroup.position.set(0, 0, 20);
         scene.add(playerGroup);
 
         if (!isOnVehicle) {
@@ -328,34 +482,140 @@
         const enemyBody = new THREE.Mesh(new THREE.BoxGeometry(1.5, 3.2, 1.3), new THREE.MeshStandardMaterial({ color: 0x4a0000, roughness: 0.3 }));
         enemyBody.position.y = 1.6;
         enemyGroup.add(enemyBody);
-        
+
         const eyeMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
         const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 8), eyeMat);
         leftEye.position.set(-0.45, 2.6, 0.7); enemyGroup.add(leftEye);
         const rightEye = leftEye.clone(); rightEye.position.x = 0.45; enemyGroup.add(rightEye);
-        
+
         enemyGroup.position.set(0, 0, -180);
         scene.add(enemyGroup);
 
-        // --- CONTROLS ---
+        // --- CONTROLS (PC KEYBOARD + MOBILE TOUCH BUTTONS) ---
         const keys = { up: false, down: false, left: false, right: false };
+
         window.addEventListener('keydown', (e) => {
             const k = e.key.toLowerCase();
             if (k === 'w' || k === 'arrowup') keys.up = true;
             if (k === 's' || k === 'arrowdown') keys.down = true;
             if (k === 'a' || k === 'arrowleft') keys.left = true;
             if (k === 'd' || k === 'arrowright') keys.right = true;
-            
-            if (k === 'e' && gameActive && selectedVehicle !== 'foot') {
-                isOnVehicle = !isOnVehicle;
-                bikeBody.visible = isOnVehicle;
-                charMesh.visible = !isOnVehicle;
-                document.getElementById('bike-status').innerText = isOnVehicle ? "On Vehicle" : "Walking on Foot";
+
+            if (k === 'e') {
+                toggleVehicleState();
             }
         });
+
         window.addEventListener('keyup', (e) => {
             const k = e.key.toLowerCase();
             if (k === 'w' || k === 'arrowup') keys.up = false;
             if (k === 's' || k === 'arrowdown') keys.down = false;
             if (k === 'a' || k === 'arrowleft') keys.left = false;
-            if (k === 'd' || k === 'arrow
+            if (k === 'd' || k === 'arrowright') keys.right = false;
+        });
+
+        function bindHoldButton(btnId, keyName) {
+            const el = document.getElementById(btnId);
+            const press = (ev) => {
+                ev.preventDefault();
+                keys[keyName] = true;
+                el.classList.add('active-touch');
+            };
+            const release = (ev) => {
+                ev.preventDefault();
+                keys[keyName] = false;
+                el.classList.remove('active-touch');
+            };
+            el.addEventListener('pointerdown', press);
+            el.addEventListener('pointerup', release);
+            el.addEventListener('pointercancel', release);
+            el.addEventListener('pointerleave', release);
+        }
+
+        bindHoldButton('m-up', 'up');
+        bindHoldButton('m-down', 'down');
+        bindHoldButton('m-left', 'left');
+        bindHoldButton('m-right', 'right');
+
+        document.getElementById('m-bike').addEventListener('pointerdown', (ev) => {
+            ev.preventDefault();
+            toggleVehicleState();
+        });
+
+        // --- GAME LOOP ---
+        let playerYaw = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            keyGroup.rotation.y += 0.04;
+
+            if (gameActive) {
+                const moveSpeed = isOnVehicle ? 0.55 : 0.24;
+                const turnSpeed = isOnVehicle ? 0.045 : 0.05;
+
+                if (keys.left) playerYaw += turnSpeed;
+                if (keys.right) playerYaw -= turnSpeed;
+                playerGroup.rotation.y = playerYaw;
+
+                let forwardInput = 0;
+                if (keys.up) forwardInput += 1;
+                if (keys.down) forwardInput -= 1;
+
+                const nextX = playerGroup.position.x + Math.sin(playerYaw) * forwardInput * moveSpeed;
+                const nextZ = playerGroup.position.z + Math.cos(playerYaw) * forwardInput * moveSpeed;
+
+                let hitsBuilding = false;
+                for (const b of buildingObjects) {
+                    if (nextX > b.minX - 1.2 && nextX < b.maxX + 1.2 && nextZ > b.minZ - 1.2 && nextZ < b.maxZ + 1.2) {
+                        hitsBuilding = true;
+                        break;
+                    }
+                }
+
+                if (!hitsBuilding) {
+                    playerGroup.position.x = nextX;
+                    playerGroup.position.z = nextZ;
+                }
+
+                // Collect Golden Key
+                if (!hasKey && playerGroup.position.distanceTo(keyGroup.position) < 6.5) {
+                    hasKey = true;
+                    keyGroup.visible = false;
+                    totalCoins += 6;
+                    document.getElementById('coin-cnt').innerText = totalCoins;
+                    document.getElementById('key-hud').innerHTML = `🔑 Golden Key: <span style="color:#2ed573;">FOUND!</span> | 🪙 Coins: <span id="coin-cnt">${totalCoins}</span> | Status: <span id="bike-status">${isOnVehicle ? "On Vehicle" : "Walking on Foot"}</span>`;
+                    document.getElementById('win-screen').style.display = 'flex';
+                    gameActive = false;
+                }
+
+                // Enemy chases player
+                const dx = playerGroup.position.x - enemyGroup.position.x;
+                const dz = playerGroup.position.z - enemyGroup.position.z;
+                const dist = Math.hypot(dx, dz);
+                if (dist > 0.1) {
+                    enemyGroup.position.x += (dx / dist) * enemySpeed;
+                    enemyGroup.position.z += (dz / dist) * enemySpeed;
+                    enemyGroup.rotation.y = Math.atan2(dx, dz);
+                }
+
+                // Follow camera
+                const camDist = isOnVehicle ? 9 : 6.5;
+                const camHeight = isOnVehicle ? 4.5 : 3.6;
+                const targetCamX = playerGroup.position.x - Math.sin(playerYaw) * camDist;
+                const targetCamZ = playerGroup.position.z - Math.cos(playerYaw) * camDist;
+
+                camera.position.lerp(new THREE.Vector3(targetCamX, camHeight, targetCamZ), 0.12);
+                camera.lookAt(playerGroup.position.x, 1.8, playerGroup.position.z);
+            } else {
+                camera.position.set(0, 8, 32);
+                camera.lookAt(0, 1.5, 20);
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
