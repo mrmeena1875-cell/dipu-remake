@@ -1,104 +1,361 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deepesh Meena Remake 2026 — 3D Escape</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body {
-      background: #070b14; color: #fff; overflow: hidden;
-      width: 100vw; height: 100vh; user-select: none;
-    }
-    .screen {
-      position: fixed; inset: 0; z-index: 25;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: radial-gradient(circle at top, #1e293b 0%, #070b14 75%);
-      text-align: center; padding: 20px;
-    }
-    .hidden { display: none !important; }
-    .badge {
-      background: rgba(250, 204, 21, 0.14); border: 1px solid rgba(250, 204, 21, 0.45);
-      color: #fde047; padding: 6px 16px; border-radius: 999px;
-      font-size: 13px; font-weight: 700; letter-spacing: 0.8px; margin-bottom: 14px;
-    }
-    h1 {
-      font-size: clamp(30px, 6vw, 54px); font-weight: 900; letter-spacing: 1px;
-      background: linear-gradient(90deg, #38bdf8, #facc15, #f97316);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 10px;
-    }
-    .sub { color: #cbd5e1; max-width: 560px; font-size: 15px; margin-bottom: 24px; line-height: 1.5; }
-    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-    button {
-      background: #2563eb; color: #fff; border: none; padding: 11px 20px;
-      border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 14px;
-      transition: transform 0.08s ease, background 0.15s ease;
-    }
-    button:hover:not(:disabled) { background: #1d4ed8; }
-    button:active:not(:disabled) { transform: scale(0.97); }
-    button:disabled { opacity: 0.45; cursor: not-allowed; }
-    button.secondary { background: #334155; }
-    button.secondary:hover:not(:disabled) { background: #475569; }
-    button.green { background: #16a34a; }
-    button.green:hover:not(:disabled) { background: #15803d; }
-    button.selected-diff { outline: 3px solid #facc15; background: #16a34a; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIPU REMAKE 2026 - WORKING BUTTONS EDITION</title>
+    <style>
+        * { box-sizing: border-box; user-select: none; margin: 0; padding: 0; }
+        body { overflow: hidden; background: #000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-    #hud {
-      position: fixed; top: 10px; left: 10px; right: 10px; z-index: 10;
-      display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center;
-      pointer-events: none;
-    }
-    .pill {
-      background: rgba(15, 23, 42, 0.84); border: 1px solid rgba(255,255,255,0.16);
-      padding: 7px 14px; border-radius: 999px; font-size: 13px; backdrop-filter: blur(6px);
-    }
-    #helpBar {
-      position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 10;
-      background: rgba(15, 23, 42, 0.84); border: 1px solid rgba(255,255,255,0.14);
-      padding: 8px 16px; border-radius: 999px; font-size: 12px; color: #e2e8f0;
-      white-space: nowrap; pointer-events: none;
-    }
-    #toast {
-      position: fixed; top: 58px; left: 50%; transform: translateX(-50%); z-index: 15;
-      background: rgba(239, 68, 68, 0.94); color: #fff; padding: 7px 16px;
-      border-radius: 9px; font-size: 13px; font-weight: 700; display: none;
-    }
-    #shopModal {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78);
-      z-index: 35; align-items: center; justify-content: center;
-    }
-    #shopBox {
-      background: #1e293b; border: 1px solid #475569; border-radius: 14px;
-      padding: 20px; width: min(92vw, 480px); text-align: left;
-    }
-    .item-row {
-      display: flex; justify-content: space-between; align-items: center;
-      background: #0f172a; padding: 10px 12px; border-radius: 8px; margin-top: 10px;
-    }
-    #endOverlay {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78);
-      z-index: 20; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 20px;
-    }
-    canvas { display: block; width: 100vw; height: 100vh; }
-  </style>
+        .screen {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 100;
+        }
+
+        #splash-screen {
+            background: radial-gradient(circle, #3d0000 0%, #000000 100%);
+            border: 8px solid #ff0000;
+            display: flex;
+        }
+        #shop-screen {
+            background: radial-gradient(circle, #1a0033 0%, #000000 100%);
+            border: 8px solid #a855f7;
+            display: none;
+        }
+        #options-screen {
+            background: radial-gradient(circle, #050515 0%, #000000 100%);
+            border: 8px solid #38bdf8;
+            display: none;
+        }
+
+        .menu-box {
+            position: relative; width: 92%; max-width: 640px; height: 92%; max-height: 760px;
+            border: 4px solid #ff3838; border-radius: 20px; padding: 25px;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+            box-shadow: inset 0 0 60px rgba(255,0,0,0.8), 0 0 50px rgba(255, 0, 0, 0.5);
+            background: rgba(10, 2, 5, 0.96); color: #fff;
+        }
+        .title-main { font-size: 44px; font-weight: 900; letter-spacing: 5px; color: #ff3838; text-shadow: 4px 4px 0px #000; text-align: center; }
+        .subtitle { font-size: 13px; color: #ffa502; letter-spacing: 3px; font-weight: bold; margin-top: -6px; }
+
+        .options-panel { width: 100%; display: flex; flex-direction: column; gap: 10px; background: rgba(255,0,0,0.06); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,0,0,0.3); }
+        .option-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; }
+        .option-row select { background: #111; color: #ff4757; border: 2px solid #ff3838; padding: 5px 10px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+
+        .btn-action {
+            background: #ff3838; color: #fff; border: 3px solid #fff;
+            padding: 12px 0; width: 250px; font-size: 22px; font-weight: 900;
+            letter-spacing: 3px; border-radius: 12px; cursor: pointer;
+            box-shadow: 5px 5px 0px #000; text-align: center; transition: 0.2s;
+        }
+        .btn-action:hover { transform: scale(1.05); background: #ff4d4d; }
+
+        .rules-box { font-size: 11px; color: #ff9f43; text-align: center; background: rgba(255, 159, 67, 0.1); border: 1px dashed #ff9f43; padding: 8px; border-radius: 6px; width: 100%; line-height: 1.3; }
+
+        #hud {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 50; font-family: sans-serif;
+        }
+        .hud-top-left { position: absolute; top: 20px; left: 20px; background: rgba(15, 5, 10, 0.9); border: 2px solid #ff3838; color: #ff3838; font-size: 16px; font-weight: bold; padding: 10px 18px; border-radius: 10px; pointer-events: auto; }
+        .hud-top-right { position: absolute; top: 20px; right: 20px; background: rgba(120, 0, 0, 0.9); border: 2px solid #ff0000; color: #fff; font-size: 14px; font-weight: bold; padding: 10px 18px; border-radius: 10px; }
+        #event-alert { position: absolute; top: 90px; width: 100%; text-align: center; color: #ff0000; font-size: 24px; font-weight: bold; display: none; text-shadow: 3px 3px 10px #000; }
+        
+        #win-screen {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(5, 0, 5, 0.96); display: none; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 200; color: #2ed573;
+            font-size: 38px; font-weight: 900; letter-spacing: 3px; text-shadow: 0 0 25px #2ed573; text-align: center;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-  <!-- 1. Start Screen -->
-  <div id="startScreen" class="screen">
-    <div class="badge">⚡ 3D EDITION • DEEPESH MEENA REMAKE 2026</div>
-    <h1>DEEPESH MEENA REMAKE 2026</h1>
-    <p class="sub">
-      3D एरिना में कॉइन्स इकट्ठा करो, लावा के गड्ढों और घोस्ट से बचो, हर 10 सेकंड में मैप शफल होता है, और नई बाइक व सुपरकार अनलॉक करो!
-    </p>
-    <div class="btn-row">
-      <button class="green" onclick="goToDifficulty()">▶ Play Now</button>
-      <button class="secondary" onclick="toggleShop()">🛒 Garage</button>
-    </div>
-  </div>
 
-  <!-- 2. Difficulty Screen -->
-  <div id="diffScreen" class="screen hidden">
-    <div class="badge">🎯 SELECT DIFFICULTY</div>
-    <h1 style="font-size: clamp(26px, 5vw, 42px);">
+    <!-- SCREEN 1: SPLASH MAIN MENU -->
+    <div id="splash-screen" class="screen">
+        <div class="menu-box">
+            <div style="text-align: center;">
+                <div style="font-size: 45px;">🩸</div>
+                <div class="title-main">DIPU REMAKE</div>
+                <div class="subtitle">WORKING BUTTONS EDITION 2026</div>
+            </div>
+            <div class="rules-box">
+                💀 <b>CONTROLS:</b> WASD to Drive/Walk. Press <b>'E'</b> to Dismount/Sit on Bike. Earn +6 Coins per Escape.
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: center;">
+                <button class="btn-action" id="btn-shop">SHOP & GARAGE</button>
+                <button class="btn-action" id="btn-play" style="background: #2ed573;">PLAY GAME</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: SHOP -->
+    <div id="shop-screen" class="screen">
+        <div class="menu-box">
+            <div style="text-align: center;">
+                <div style="font-size: 35px;">🛒</div>
+                <div class="title-main" style="font-size: 36px;">BIKE SHOP</div>
+                <div class="subtitle">CHOOSE YOUR RIDE</div>
+            </div>
+
+            <div class="options-panel">
+                <div class="option-row">
+                    <span>🪙 Your Coins:</span>
+                    <span id="shop-coin-display" style="color: #ffd700; font-size: 18px;">0</span>
+                </div>
+                <div class="option-row">
+                    <span>🏍️ Select Vehicle / Foot:</span>
+                    <select id="garage-select">
+                        <option value="default" selected>Standard Red Sport (Free)</option>
+                        <option value="ghost">Ghost Rider Inferno (6 Coins)</option>
+                        <option value="gold">Royal Gold SuperBike (12 Coins)</option>
+                        <option value="foot">Walk on Foot (Hardcore)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn-action" id="btn-back-shop">BACK TO MENU</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: OPTIONS & PRESETS -->
+    <div id="options-screen" class="screen">
+        <div class="menu-box">
+            <div style="text-align: center;">
+                <div style="font-size: 35px;">⚙️</div>
+                <div class="title-main" style="font-size: 34px;">MISSION PRESETS</div>
+                <div class="subtitle">BUILDING INTERIORS & DIFFICULTY</div>
+            </div>
+
+            <div class="options-panel">
+                <div class="option-row">
+                    <span>💀 Difficulty Mode:</span>
+                    <select id="diff-select">
+                        <option value="easy">Easy</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="hard">Hard</option>
+                        <option value="extreme">Extreme Hard</option>
+                        <option value="impossible">Impossible (Deathly)</option>
+                    </select>
+                </div>
+                <div class="option-row">
+                    <span>🏢 Building Interior Preset:</span>
+                    <select id="preset-select">
+                        <option value="1" selected>Preset 1: North District Mega Halls</option>
+                        <option value="2">Preset 2: East Wing Multi-Floor</option>
+                        <option value="3">Preset 3: South Tower Complex</option>
+                        <option value="4">Preset 4: West Sector Haunted Base</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn-action" id="btn-start-mission" style="background: #2ed573;">START MISSION</button>
+        </div>
+    </div>
+
+    <!-- WIN SCREEN -->
+    <div id="win-screen">
+        🎉 MISSION PASSED! +6 COINS EARNED! 🎉
+        <div style="font-size: 18px; color: #70a1ff; margin-top: 20px; cursor: pointer; border: 2px solid #70a1ff; padding: 10px 20px; border-radius: 8px;" onclick="location.reload()">PLAY AGAIN (+6 COINS)</div>
+    </div>
+
+    <!-- HUD -->
+    <div id="hud">
+        <div class="hud-top-left" id="key-hud">🔑 Golden Key: SEARCHING... | 🪙 Coins: <span id="coin-cnt">0</span> | Status: <span id="bike-status">On Vehicle</span></div>
+        <div class="hud-top-right">DIPU REMAKE 2026</div>
+        <div id="event-alert">⚠️ ENEMY CHANGED WEATHER & TELEPORTED! ⚠️</div>
+    </div>
+
+    <script>
+        let totalCoins = 0;
+        let selectedVehicle = 'default';
+        let selectedPreset = '1';
+        let gameActive = false;
+        let hasKey = false;
+        let enemySpeed = 0.14;
+        let isOnVehicle = true;
+
+        // --- BUTTON EVENT LISTENERS FIX ---
+        document.getElementById('btn-shop').addEventListener('click', () => {
+            document.getElementById('splash-screen').style.display = 'none';
+            document.getElementById('shop-screen').style.display = 'flex';
+            document.getElementById('shop-coin-display').innerText = totalCoins;
+        });
+
+        document.getElementById('btn-back-shop').addEventListener('click', () => {
+            selectedVehicle = document.getElementById('garage-select').value;
+            document.getElementById('shop-screen').style.display = 'none';
+            document.getElementById('splash-screen').style.display = 'flex';
+        });
+
+        document.getElementById('btn-play').addEventListener('click', () => {
+            document.getElementById('splash-screen').style.display = 'none';
+            document.getElementById('options-screen').style.display = 'flex';
+        });
+
+        document.getElementById('btn-start-mission').addEventListener('click', () => {
+            const diff = document.getElementById('diff-select').value;
+            selectedPreset = document.getElementById('preset-select').value;
+
+            if (diff === 'easy') enemySpeed = 0.08;
+            if (diff === 'normal') enemySpeed = 0.12;
+            if (diff === 'hard') enemySpeed = 0.17;
+            if (diff === 'extreme') enemySpeed = 0.22;
+            if (diff === 'impossible') enemySpeed = 0.28;
+
+            if (selectedVehicle === 'foot') {
+                isOnVehicle = false;
+            }
+
+            document.getElementById('options-screen').style.display = 'none';
+            document.getElementById('hud').style.display = 'block';
+            gameActive = true;
+        });
+
+        // --- THREE.JS SCENE SETUP ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0205);
+        scene.fog = new THREE.FogExp2(0x0a0205, 0.003);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 3500);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0x331111, 0.8);
+        scene.add(ambientLight);
+
+        let dynamicSun = new THREE.DirectionalLight(0xff0000, 1.5);
+        dynamicSun.position.set(300, 500, 300);
+        dynamicSun.castShadow = true;
+        scene.add(dynamicSun);
+
+        // Ground
+        const ground = new THREE.Mesh(
+            new THREE.PlaneGeometry(4000, 4000),
+            new THREE.MeshStandardMaterial({ color: 0x111115, roughness: 0.9 })
+        );
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        scene.add(ground);
+
+        // --- BUILDINGS WITH WALKABLE INTERIOR ROOMS ---
+        const buildingObjects = [];
+
+        function createInteriorBuilding(x, z, w, h, d) {
+            const group = new THREE.Group();
+            
+            const mat = new THREE.MeshStandardMaterial({ color: 0x1a1a24, roughness: 0.4 });
+            const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+            body.position.y = h / 2;
+            body.castShadow = true; body.receiveShadow = true;
+            group.add(body);
+
+            const roomMat = new THREE.MeshStandardMaterial({ color: 0x221111, roughness: 0.5, side: THREE.BackSide });
+            const room = new THREE.Mesh(new THREE.BoxGeometry(w - 4, h - 2, d - 4), roomMat);
+            room.position.y = h / 2;
+            group.add(room);
+
+            group.position.set(x, 0, z);
+            scene.add(group);
+
+            buildingObjects.push({
+                minX: x - w/2, maxX: x + w/2,
+                minZ: z - d/2, maxZ: z + d/2
+            });
+        }
+
+        for (let x = -250; x <= 250; x += 120) {
+            for (let z = -250; z <= 250; z += 120) {
+                if (Math.abs(x) > 30 || Math.abs(z) > 30) {
+                    createInteriorBuilding(x, z, 50, 50, 50);
+                }
+            }
+        }
+
+        // --- GOLDEN KEY PRESETS ---
+        const keyPresets = [
+            {x: 120, y: 2, z: -120}, {x: -120, y: 2, z: 120}, {x: 180, y: 15, z: 180},
+            {x: -180, y: 25, z: -150}, {x: 60, y: 2, z: -200}, {x: -200, y: 15, z: 60},
+            {x: 140, y: 2, z: 100}, {x: -140, y: 25, z: -100}, {x: 0, y: 15, z: 180}, {x: -180, y: 2, z: 0}
+        ];
+        const chosenPreset = keyPresets[Math.floor(Math.random() * keyPresets.length)];
+
+        const keyGroup = new THREE.Group();
+        const keyHead = new THREE.Mesh(new THREE.TorusGeometry(0.9, 0.3, 16, 30), new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.95, roughness: 0.05 }));
+        keyHead.castShadow = true;
+        keyGroup.add(keyHead);
+        keyGroup.position.set(chosenPreset.x, chosenPreset.y, chosenPreset.z);
+        scene.add(keyGroup);
+
+        // --- PLAYER / VEHICLE & CHARACTER ---
+        const playerGroup = new THREE.Group();
+        let bikeColor = 0xff0000;
+        if (selectedVehicle === 'ghost') bikeColor = 0x00ffff;
+        if (selectedVehicle === 'gold') bikeColor = 0xffd700;
+
+        const bikeBody = new THREE.Mesh(new THREE.BoxGeometry(1.3, 1.0, 3.2), new THREE.MeshStandardMaterial({ color: bikeColor, metalness: 0.85, roughness: 0.15 }));
+        bikeBody.position.y = 1.0;
+        bikeBody.castShadow = true;
+        playerGroup.add(bikeBody);
+
+        const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111, roughness: 0.9 });
+        const wheelF = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.45, 20), wheelMat);
+        wheelF.rotation.z = Math.PI / 2;
+        wheelF.position.set(0, 0.55, 1.3);
+        playerGroup.add(wheelF);
+        const wheelB = wheelF.clone();
+        wheelB.position.z = -1.3;
+        playerGroup.add(wheelB);
+
+        const charMesh = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.8, 0.7), new THREE.MeshStandardMaterial({ color: 0x38bdf8 }));
+        charMesh.position.set(0, 1.4, 0);
+        charMesh.visible = false;
+        playerGroup.add(charMesh);
+
+        scene.add(playerGroup);
+
+        if (!isOnVehicle) {
+            bikeBody.visible = false;
+            charMesh.visible = true;
+        }
+
+        // --- ENEMY ---
+        const enemyGroup = new THREE.Group();
+        const enemyBody = new THREE.Mesh(new THREE.BoxGeometry(1.5, 3.2, 1.3), new THREE.MeshStandardMaterial({ color: 0x4a0000, roughness: 0.3 }));
+        enemyBody.position.y = 1.6;
+        enemyGroup.add(enemyBody);
+        
+        const eyeMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 8), eyeMat);
+        leftEye.position.set(-0.45, 2.6, 0.7); enemyGroup.add(leftEye);
+        const rightEye = leftEye.clone(); rightEye.position.x = 0.45; enemyGroup.add(rightEye);
+        
+        enemyGroup.position.set(0, 0, -180);
+        scene.add(enemyGroup);
+
+        // --- CONTROLS ---
+        const keys = { up: false, down: false, left: false, right: false };
+        window.addEventListener('keydown', (e) => {
+            const k = e.key.toLowerCase();
+            if (k === 'w' || k === 'arrowup') keys.up = true;
+            if (k === 's' || k === 'arrowdown') keys.down = true;
+            if (k === 'a' || k === 'arrowleft') keys.left = true;
+            if (k === 'd' || k === 'arrowright') keys.right = true;
+            
+            if (k === 'e' && gameActive && selectedVehicle !== 'foot') {
+                isOnVehicle = !isOnVehicle;
+                bikeBody.visible = isOnVehicle;
+                charMesh.visible = !isOnVehicle;
+                document.getElementById('bike-status').innerText = isOnVehicle ? "On Vehicle" : "Walking on Foot";
+            }
+        });
+        window.addEventListener('keyup', (e) => {
+            const k = e.key.toLowerCase();
+            if (k === 'w' || k === 'arrowup') keys.up = false;
+            if (k === 's' || k === 'arrowdown') keys.down = false;
+            if (k === 'a' || k === 'arrowleft') keys.left = false;
+            if (k === 'd' || k === 'arrow
