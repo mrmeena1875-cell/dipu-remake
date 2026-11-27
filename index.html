@@ -1,524 +1,453 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dipesh meena REMAKE 2026 - ULTIMATE MASTERPIECE</title>
-    <style>
-        * { box-sizing: border-box; user-select: none; margin: 0; padding: 0; }
-        body { overflow: hidden; background: #000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-
-        .screen {
-            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 100;
-        }
-
-        #splash-screen {
-            background: radial-gradient(circle, #3d0000 0%, #000000 100%);
-            border: 8px solid #ff0000;
-        }
-        #shop-screen {
-            background: radial-gradient(circle, #1a0033 0%, #000000 100%);
-            border: 8px solid #a855f7;
-            display: none;
-        }
-        #options-screen {
-            background: radial-gradient(circle, #050515 0%, #000000 100%);
-            border: 8px solid #38bdf8;
-            display: none;
-        }
-
-        .menu-box {
-            position: relative; width: 92%; max-width: 640px; height: 92%; max-height: 760px;
-            border: 4px solid #ff3838; border-radius: 20px; padding: 25px;
-            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
-            box-shadow: inset 0 0 60px rgba(255,0,0,0.8), 0 0 50px rgba(255, 0, 0, 0.5);
-            background: rgba(10, 2, 5, 0.96); color: #fff;
-        }
-        .title-main { font-size: 46px; font-weight: 900; letter-spacing: 5px; color: #ff3838; text-shadow: 4px 4px 0px #000; text-align: center; }
-        .subtitle { font-size: 13px; color: #ffa502; letter-spacing: 3px; font-weight: bold; margin-top: -6px; }
-
-        .options-panel { width: 100%; display: flex; flex-direction: column; gap: 10px; background: rgba(255,0,0,0.06); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,0,0,0.3); }
-        .option-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; }
-        .option-row select { background: #111; color: #ff4757; border: 2px solid #ff3838; padding: 5px 10px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-
-        .btn-action {
-            background: #ff3838; color: #fff; border: 3px solid #fff;
-            padding: 12px 0; width: 250px; font-size: 22px; font-weight: 900;
-            letter-spacing: 3px; border-radius: 12px; cursor: pointer;
-            box-shadow: 5px 5px 0px #000; text-align: center; transition: 0.2s;
-        }
-        .btn-action:hover { transform: scale(1.05); background: #ff4d4d; }
-
-        .rules-box { font-size: 11px; color: #ff9f43; text-align: center; background: rgba(255, 159, 67, 0.1); border: 1px dashed #ff9f43; padding: 8px; border-radius: 6px; width: 100%; line-height: 1.3; }
-
-        #hud {
-            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 50; font-family: sans-serif;
-        }
-        .hud-top-left { position: absolute; top: 20px; left: 20px; background: rgba(15, 5, 10, 0.9); border: 2px solid #ff3838; color: #ff3838; font-size: 16px; font-weight: bold; padding: 10px 18px; border-radius: 10px; pointer-events: auto; }
-        .hud-top-right { position: absolute; top: 20px; right: 20px; background: rgba(120, 0, 0, 0.9); border: 2px solid #ff0000; color: #fff; font-size: 14px; font-weight: bold; padding: 10px 18px; border-radius: 10px; }
-        #event-alert { position: absolute; top: 90px; width: 100%; text-align: center; color: #ff0000; font-size: 24px; font-weight: bold; display: none; text-shadow: 3px 3px 10px #000; }
-
-        #dpad-controls {
-            position: absolute; bottom: 24px; right: 24px;
-            display: grid; grid-template-columns: 56px 56px 56px; grid-template-rows: 56px 56px;
-            gap: 8px; pointer-events: auto; z-index: 60;
-        }
-        .pad-btn {
-            background: rgba(20, 10, 20, 0.85); color: #fff;
-            border: 2px solid #ff3838; border-radius: 10px;
-            font-size: 20px; font-weight: 900; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
-        }
-        .pad-btn:active, .pad-btn.active-key {
-            background: #ff3838; transform: scale(0.95);
-        }
-        #pad-up { grid-column: 2; grid-row: 1; }
-        #pad-left { grid-column: 1; grid-row: 2; }
-        #pad-down { grid-column: 2; grid-row: 2; }
-        #pad-right { grid-column: 3; grid-row: 2; }
-
-        #win-screen {
-            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(5, 0, 5, 0.96); display: none; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 200; color: #2ed573;
-            font-size: 38px; font-weight: 900; letter-spacing: 3px; text-shadow: 0 0 25px #2ed573; text-align: center;
-        }
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deepesh Remake — Ultimate Escape</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: #111; color: #fff; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+    #hud {
+      position: fixed; top: 12px; left: 12px; right: 12px;
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center;
+      pointer-events: none; z-index: 10;
+    }
+    .pill {
+      background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.16);
+      padding: 8px 14px; border-radius: 999px; font-size: 14px; backdrop-filter: blur(6px);
+    }
+    .controls-bar {
+      position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; z-index: 10;
+    }
+    button {
+      background: #2563eb; color: #fff; border: none; padding: 8px 14px;
+      border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;
+    }
+    button:hover { background: #1d4ed8; }
+    button.secondary { background: #334155; }
+    button.secondary:hover { background: #475569; }
+    #shopModal {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+      z-index: 20; align-items: center; justify-content: center;
+    }
+    #shopBox {
+      background: #1e293b; border: 1px solid #475569; border-radius: 14px;
+      padding: 20px; width: min(92vw, 460px);
+    }
+    .item-row {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #0f172a; padding: 10px 12px; border-radius: 8px; margin-top: 10px;
+    }
+    canvas { display: block; border: 2px solid #334155; border-radius: 8px; background: #1f2937; }
+  </style>
 </head>
 <body>
+  <div id="hud">
+    <div class="pill">🪙 Coins: <strong id="coinCount">0</strong> | 🎯 Target: <strong id="targetCount">6</strong></div>
+    <div class="pill">🚗 Vehicle: <strong id="vehName">Street Bike</strong> (<span id="boardStatus">Riding — Press E to exit</span>)</div>
+    <div class="pill">🌗 Time: <strong id="timeLabel">Morning</strong> (Press T) | 👻 Shuffle in: <strong id="shuffleTimer">10s</strong></div>
+  </div>
 
-    <!-- SCREEN 1: SPLASH MAIN MENU -->
-    <div id="splash-screen" class="screen">
-        <div class="menu-box">
-            <div style="text-align: center;">
-                <div style="font-size: 45px;">🩸</div>
-                <div class="title-main">DIPU REMAKE</div>
-                <div class="subtitle">ULTIMATE MASTERPIECE 2026</div>
-            </div>
-            <div class="rules-box">
-                💀 <b>MASTERPIECE RULES:</b> Visit the <b>Shop & Garage</b> to buy/select bikes, or run on foot! Explore Building Interiors (Presets 1 to 4). Earn +6 Coins per Escape. Beware of the Weather-Changing Enemy! Use <b>WASD</b> or <b>UP / DOWN / LEFT / RIGHT</b> (Arrow Keys) and press <b>'E'</b> to Dismount/Sit on Bike.
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: center;">
-                <button class="btn-action" onclick="goToShop()">SHOP & GARAGE</button>
-                <button class="btn-action" style="background: #2ed573;" onclick="goToOptions()">PLAY GAME</button>
-            </div>
-            <div style="font-size: 11px; color: #888;">Full Ultimate Open-World Experience</div>
-        </div>
+  <canvas id="game" width="960" height="600"></canvas>
+
+  <div class="controls-bar">
+    <button class="secondary" onclick="setDifficulty('easy')">Easy (6 Coins)</button>
+    <button class="secondary" onclick="setDifficulty('medium')">Medium (12 Coins)</button>
+    <button class="secondary" onclick="setDifficulty('hard')">Hard (18 Coins)</button>
+    <button onclick="toggleShop()">🛒 Garage & Shop</button>
+    <button class="secondary" onclick="resetGame()">🔄 Restart</button>
+  </div>
+
+  <div id="shopModal">
+    <div id="shopBox">
+      <h3>🚗 Vehicles Garage</h3>
+      <p style="font-size:13px;color:#cbd5e1;margin-top:4px;">कॉइन्स से तेज़ बाइक और सुपरकार खरीदें!</p>
+      <div id="shopList"></div>
+      <div style="margin-top:14px;text-align:right;">
+        <button class="secondary" onclick="toggleShop()">Close</button>
+      </div>
     </div>
+  </div>
 
-    <!-- SCREEN 2: SHOP & GARAGE -->
-    <div id="shop-screen" class="screen">
-        <div class="menu-box">
-            <div style="text-align: center;">
-                <div style="font-size: 35px;">🛒</div>
-                <div class="title-main" style="font-size: 36px;">BIKE SHOP</div>
-                <div class="subtitle">CHOOSE YOUR RIDE OR WALK ON FOOT</div>
-            </div>
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
 
-            <div class="options-panel">
-                <div class="option-row">
-                    <span>🪙 Your Coins:</span>
-                    <span id="shop-coin-display" style="color: #ffd700; font-size: 18px;">0</span>
-                </div>
-                <div class="option-row">
-                    <span>🏍️ Select Vehicle / Foot:</span>
-                    <select id="garage-select">
-                        <option value="default" selected>Standard Red Sport (Free)</option>
-                        <option value="ghost">Ghost Rider Inferno (Cost: 6 Coins)</option>
-                        <option value="gold">Royal Gold SuperBike (Cost: 12 Coins)</option>
-                        <option value="foot">No Vehicle / Walk on Foot (Hardcore)</option>
-                    </select>
-                </div>
-            </div>
+    const VEHICLES = [
+      { id: 'bike', name: 'Street Bike', cost: 0, speed: 4.6, color: '#38bdf8' },
+      { id: 'sportbike', name: 'Turbo Bike', cost: 6, speed: 6.2, color: '#f97316' },
+      { id: 'lambo', name: 'Lamborghini V12', cost: 14, speed: 8.0, color: '#eab308' }
+    ];
 
-            <button class="btn-action" onclick="backToSplash()">BACK TO MENU</button>
-        </div>
-    </div>
+    const TIMES = [
+      { name: 'Morning', tint: 'rgba(255, 244, 180, 0.08)', road: '#374151', grass: '#166534' },
+      { name: 'Evening', tint: 'rgba(251, 146, 60, 0.18)', road: '#292524', grass: '#14532d' },
+      { name: 'Night', tint: 'rgba(15, 23, 42, 0.45)', road: '#1e293b', grass: '#052e16' }
+    ];
 
-    <!-- SCREEN 3: OPTIONS & DIFFICULTY -->
-    <div id="options-screen" class="screen">
-        <div class="menu-box">
-            <div style="text-align: center;">
-                <div style="font-size: 35px;">⚙️</div>
-                <div class="title-main" style="font-size: 34px;">MISSION SETTINGS</div>
-                <div class="subtitle">BUILDING PRESETS & DIFFICULTY</div>
-            </div>
+    let state = {
+      difficulty: 'easy',
+      coins: 0,
+      collected: 0,
+      targetCoins: 6,
+      ownedVehicles: ['bike'],
+      equippedVehicle: 'bike',
+      onVehicle: true,
+      timeIndex: 0,
+      shuffleCountdown: 10,
+      gameOver: false,
+      won: false,
+      player: { x: 120, y: 120, r: 12, z: 0, vz: 0 },
+      ghost: { x: 820, y: 480, r: 16, speed: 1.7 },
+      coinItems: [],
+      lavaPits: [],
+      npcs: []
+    };
 
-            <div class="options-panel">
-                <div class="option-row">
-                    <span>💀 Difficulty Mode:</span>
-                    <select id="diff-select">
-                        <option value="easy">Easy</option>
-                        <option value="normal" selected>Normal</option>
-                        <option value="hard">Hard</option>
-                        <option value="extreme">Extreme Hard</option>
-                        <option value="impossible">Impossible (Deathly)</option>
-                    </select>
-                </div>
-                <div class="option-row">
-                    <span>🏢 Building Interior Preset:</span>
-                    <select id="preset-select">
-                        <option value="1" selected>Preset 1: North District Mega Halls</option>
-                        <option value="2">Preset 2: East Wing Multi-Floor</option>
-                        <option value="3">Preset 3: South Tower Complex</option>
-                        <option value="4">Preset 4: West Sector Haunted Base</option>
-                    </select>
-                </div>
-            </div>
+    const keys = {};
+    window.addEventListener('keydown', (e) => {
+      const k = e.key.toLowerCase();
+      if (!keys[k]) {
+        if (k === 'e') toggleVehicle();
+        if (k === ' ') jumpPlayer();
+        if (k === 't') cycleTime();
+      }
+      keys[k] = true;
+    });
+    window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
 
-            <button class="btn-action" style="background: #2ed573;" onclick="startGame()">START MISSION</button>
-        </div>
-    </div>
+    function getCurrentVehicle() {
+      return VEHICLES.find(v => v.id === state.equippedVehicle) || VEHICLES[0];
+    }
 
-    <!-- WIN SCREEN -->
-    <div id="win-screen">
-        🎉 ULTIMATE MISSION PASSED! +6 COINS EARNED! 🎉
-        <div style="font-size: 18px; color: #70a1ff; margin-top: 20px; cursor: pointer; border: 2px solid #70a1ff; padding: 10px 20px; border-radius: 8px;" onclick="location.reload()">PLAY AGAIN (+6 COINS)</div>
-    </div>
+    function toggleVehicle() {
+      if (state.gameOver || state.won) return;
+      state.onVehicle = !state.onVehicle;
+      updateHud();
+    }
 
-    <!-- HUD -->
-    <div id="hud">
-        <div class="hud-top-left" id="key-hud">🔑 Golden Key: SEARCHING... | 🪙 Coins: <span id="coin-cnt">0</span> | Status: <span id="bike-status">On Vehicle</span></div>
-        <div class="hud-top-right">DIPU REMAKE 2026</div>
-        <div id="event-alert">⚠️ ENEMY CHANGED WEATHER & TELEPORTED! ⚠️</div>
+    function jumpPlayer() {
+      if (state.player.z === 0) {
+        state.player.vz = 6.5;
+      }
+    }
 
-        <div id="dpad-controls" aria-label="Directional Controls">
-            <button type="button" class="pad-btn" id="pad-up" title="Up (W / ArrowUp)">↑</button>
-            <button type="button" class="pad-btn" id="pad-left" title="Left (A / ArrowLeft)">←</button>
-            <button type="button" class="pad-btn" id="pad-down" title="Down (S / ArrowDown)">↓</button>
-            <button type="button" class="pad-btn" id="pad-right" title="Right (D / ArrowRight)">→</button>
-        </div>
-    </div>
+    function cycleTime() {
+      state.timeIndex = (state.timeIndex + 1) % TIMES.length;
+      updateHud();
+    }
 
-    <script>
-        let totalCoins = 0;
-        let selectedVehicle = 'default';
+    function setDifficulty(diff) {
+      state.difficulty = diff;
+      state.targetCoins = diff === 'easy' ? 6 : diff === 'medium' ? 12 : 18;
+      resetGame();
+    }
 
-        function goToShop() {
-            document.getElementById('splash-screen').style.display = 'none';
-            document.getElementById('shop-screen').style.display = 'flex';
-            document.getElementById('shop-coin-display').innerText = totalCoins;
+    function randPos(margin = 60) {
+      return {
+        x: margin + Math.random() * (canvas.width - margin * 2),
+        y: margin + Math.random() * (canvas.height - margin * 2)
+      };
+    }
+
+    function spawnWorldItems() {
+      state.coinItems = [];
+      for (let i = 0; i < state.targetCoins; i++) {
+        const p = randPos(50);
+        state.coinItems.push({ x: p.x, y: p.y, r: 9, taken: false });
+      }
+
+      const lavaCount = state.difficulty === 'easy' ? 4 : state.difficulty === 'medium' ? 7 : 10;
+      state.lavaPits = [];
+      for (let i = 0; i < lavaCount; i++) {
+        const p = randPos(90);
+        if (Math.hypot(p.x - state.player.x, p.y - state.player.y) > 110) {
+          state.lavaPits.push({ x: p.x, y: p.y, r: 28 });
         }
+      }
+    }
 
-        function backToSplash() {
-            selectedVehicle = document.getElementById('garage-select').value;
-            document.getElementById('shop-screen').style.display = 'none';
-            document.getElementById('splash-screen').style.display = 'flex';
-        }
-
-        function goToOptions() {
-            document.getElementById('splash-screen').style.display = 'none';
-            document.getElementById('options-screen').style.display = 'flex';
-        }
-
-        let gameActive = false;
-        let hasKey = false;
-        let enemySpeed = 0.14;
-        let isOnVehicle = true;
-
-        function startGame() {
-            const diff = document.getElementById('diff-select').value;
-            if (diff === 'easy') enemySpeed = 0.08;
-            if (diff === 'normal') enemySpeed = 0.12;
-            if (diff === 'hard') enemySpeed = 0.17;
-            if (diff === 'extreme') enemySpeed = 0.22;
-            if (diff === 'impossible') enemySpeed = 0.28;
-
-            if (selectedVehicle === 'foot') {
-                isOnVehicle = false;
-            }
-
-            document.getElementById('options-screen').style.display = 'none';
-            document.getElementById('hud').style.display = 'block';
-            gameActive = true;
-        }
-
-        // --- THREE.JS MASTERPIECE SCENE SETUP ---
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a0205);
-        scene.fog = new THREE.FogExp2(0x0a0205, 0.003);
-
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 3500);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        document.body.appendChild(renderer.domElement);
-
-        const ambientLight = new THREE.AmbientLight(0x331111, 0.8);
-        scene.add(ambientLight);
-
-        let dynamicSun = new THREE.DirectionalLight(0xff0000, 1.5);
-        dynamicSun.position.set(300, 500, 300);
-        dynamicSun.castShadow = true;
-        scene.add(dynamicSun);
-
-        // Ground
-        const ground = new THREE.Mesh(
-            new THREE.PlaneGeometry(4000, 4000),
-            new THREE.MeshStandardMaterial({ color: 0x111115, roughness: 0.9 })
-        );
-        ground.rotation.x = -Math.PI / 2;
-        ground.receiveShadow = true;
-        scene.add(ground);
-
-        // --- CLEAN BUILDINGS ---
-        const buildingObjects = [];
-
-        function createCleanBuilding(x, z, w, h, d) {
-            const group = new THREE.Group();
-            const mat = new THREE.MeshStandardMaterial({ color: 0x1a1a24, roughness: 0.4 });
-            const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-            body.position.y = h / 2;
-            body.castShadow = true; body.receiveShadow = true;
-            group.add(body);
-
-            for (let fy = 12; fy < h - 4; fy += 12) {
-                const floorMat = new THREE.MeshStandardMaterial({ color: 0x331a1a, roughness: 0.3 });
-                const balcony = new THREE.Mesh(new THREE.BoxGeometry(w + 2, 1.2, d + 2), floorMat);
-                balcony.position.y = fy;
-                group.add(balcony);
-            }
-
-            group.position.set(x, 0, z);
-            scene.add(group);
-
-            buildingObjects.push({
-                minX: x - w/2 - 1, maxX: x + w/2 + 1,
-                minZ: z - d/2 - 1, maxZ: z + d/2 + 1
-            });
-        }
-
-        for (let x = -250; x <= 250; x += 120) {
-            for (let z = -250; z <= 250; z += 120) {
-                if (Math.abs(x) > 30 || Math.abs(z) > 30) {
-                    createCleanBuilding(x, z, 50, 60, 50);
-                }
-            }
-        }
-
-        // --- 10 RANDOM KEY PRESETS ---
-        const keyPresets = [
-            {x: 120, y: 2, z: -120}, {x: -120, y: 2, z: 120}, {x: 180, y: 20, z: 180},
-            {x: -180, y: 32, z: -150}, {x: 60, y: 2, z: -200}, {x: -200, y: 20, z: 60},
-            {x: 140, y: 2, z: 100}, {x: -140, y: 32, z: -100}, {x: 0, y: 20, z: 180}, {x: -180, y: 2, z: 0}
-        ];
-        const chosenPreset = keyPresets[Math.floor(Math.random() * keyPresets.length)];
-
-        const keyGroup = new THREE.Group();
-        const keyHead = new THREE.Mesh(new THREE.TorusGeometry(0.9, 0.3, 16, 30), new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.95, roughness: 0.05 }));
-        keyHead.castShadow = true;
-        keyGroup.add(keyHead);
-        keyGroup.position.set(chosenPreset.x, chosenPreset.y, chosenPreset.z);
-        scene.add(keyGroup);
-
-        // --- PLAYER / VEHICLE & CHARACTER ---
-        const playerGroup = new THREE.Group();
-        let bikeColor = 0xff0000;
-        if (selectedVehicle === 'ghost') bikeColor = 0x00ffff;
-        if (selectedVehicle === 'gold') bikeColor = 0xffd700;
-
-        const bikeBody = new THREE.Mesh(new THREE.BoxGeometry(1.3, 1.0, 3.2), new THREE.MeshStandardMaterial({ color: bikeColor, metalness: 0.85, roughness: 0.15 }));
-        bikeBody.position.y = 1.0;
-        bikeBody.castShadow = true;
-        playerGroup.add(bikeBody);
-
-        const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111, roughness: 0.9 });
-        const wheelF = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.45, 20), wheelMat);
-        wheelF.rotation.z = Math.PI / 2;
-        wheelF.position.set(0, 0.55, 1.3);
-        playerGroup.add(wheelF);
-        const wheelB = wheelF.clone();
-        wheelB.position.z = -1.3;
-        playerGroup.add(wheelB);
-
-        const charMesh = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.8, 0.7), new THREE.MeshStandardMaterial({ color: 0x38bdf8 }));
-        charMesh.position.set(0, 1.4, 0);
-        charMesh.visible = false;
-        playerGroup.add(charMesh);
-
-        scene.add(playerGroup);
-
-        if (!isOnVehicle) {
-            bikeBody.visible = false;
-            charMesh.visible = true;
-        }
-
-        // --- ENEMY ---
-        const enemyGroup = new THREE.Group();
-        const enemyBody = new THREE.Mesh(new THREE.BoxGeometry(1.5, 3.2, 1.3), new THREE.MeshStandardMaterial({ color: 0x4a0000, roughness: 0.3 }));
-        enemyBody.position.y = 1.6;
-        enemyGroup.add(enemyBody);
-        
-        const eyeMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-        const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 8), eyeMat);
-        leftEye.position.set(-0.45, 2.6, 0.7); enemyGroup.add(leftEye);
-        const rightEye = leftEye.clone(); rightEye.position.x = 0.45; enemyGroup.add(rightEye);
-        
-        enemyGroup.position.set(0, 0, -180);
-        scene.add(enemyGroup);
-
-        // --- CONTROLS: WASD + UP / DOWN / LEFT / RIGHT + ON-SCREEN PAD ---
-        const keys = { up: false, down: false, left: false, right: false };
-
-        function setDirection(dir, isPressed) {
-            keys[dir] = isPressed;
-            const btnMap = {
-                up: 'pad-up',
-                down: 'pad-down',
-                left: 'pad-left',
-                right: 'pad-right'
-            };
-            const btn = document.getElementById(btnMap[dir]);
-            if (btn) btn.classList.toggle('active-key', isPressed);
-        }
-
-        window.addEventListener('keydown', (e) => {
-            const k = e.key.toLowerCase();
-            if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(k)) {
-                e.preventDefault();
-            }
-            if (k === 'w' || k === 'arrowup') setDirection('up', true);
-            if (k === 's' || k === 'arrowdown') setDirection('down', true);
-            if (k === 'a' || k === 'arrowleft') setDirection('left', true);
-            if (k === 'd' || k === 'arrowright') setDirection('right', true);
-
-            if (k === 'e' && gameActive && selectedVehicle !== 'foot') {
-                isOnVehicle = !isOnVehicle;
-                bikeBody.visible = isOnVehicle;
-                charMesh.visible = !isOnVehicle;
-                document.getElementById('bike-status').innerText = isOnVehicle ? "On Vehicle" : "Walking on Foot";
-            }
+    function spawnNpcs() {
+      state.npcs = [];
+      for (let i = 0; i < 12; i++) {
+        const p = randPos(40);
+        const angle = Math.random() * Math.PI * 2;
+        state.npcs.push({
+          x: p.x, y: p.y, r: 8,
+          vx: Math.cos(angle) * 1.1,
+          vy: Math.sin(angle) * 1.1
         });
+      }
+    }
 
-        window.addEventListener('keyup', (e) => {
-            const k = e.key.toLowerCase();
-            if (k === 'w' || k === 'arrowup') setDirection('up', false);
-            if (k === 's' || k === 'arrowdown') setDirection('down', false);
-            if (k === 'a' || k === 'arrowleft') setDirection('left', false);
-            if (k === 'd' || k === 'arrowright') setDirection('right', false);
-        });
-
-        ['up', 'down', 'left', 'right'].forEach((dir) => {
-            const btn = document.getElementById(`pad-${dir}`);
-            ['pointerdown', 'mousedown', 'touchstart'].forEach((ev) => {
-                btn.addEventListener(ev, (e) => {
-                    e.preventDefault();
-                    setDirection(dir, true);
-                });
-            });
-            ['pointerup', 'pointerleave', 'pointercancel', 'mouseup', 'touchend'].forEach((ev) => {
-                btn.addEventListener(ev, () => setDirection(dir, false));
-            });
-        });
-
-        let pAngle = 0;
-        let pSpeed = 0;
-        let eventTimer = 0;
-        let alertClock = 0;
-
-        function checkCollision(nx, nz) {
-            for (let b of buildingObjects) {
-                if (nx > b.minX && nx < b.maxX && nz > b.minZ && nz < b.maxZ) {
-                    return true;
-                }
-            }
-            return false;
+    function shuffleMapByGhost() {
+      state.coinItems.forEach(c => {
+        if (!c.taken) {
+          const p = randPos(50);
+          c.x = p.x; c.y = p.y;
         }
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            if (gameActive) {
-                const maxRun = isOnVehicle ? 1.5 : 0.8;
-                if (keys.up) pSpeed = Math.min(pSpeed + 0.04, maxRun);
-                else if (keys.down) pSpeed = Math.max(pSpeed - 0.04, -maxRun * 0.5);
-                else pSpeed *= 0.92;
-
-                if (keys.left) pAngle += 0.06;
-                if (keys.right) pAngle -= 0.06;
-
-                let nextX = playerGroup.position.x - Math.sin(pAngle) * pSpeed;
-                let nextZ = playerGroup.position.z - Math.cos(pAngle) * pSpeed;
-
-                if (!checkCollision(nextX, nextZ)) {
-                    playerGroup.position.x = nextX;
-                    playerGroup.position.z = nextZ;
-                } else {
-                    pSpeed = -pSpeed * 0.4;
-                }
-
-                playerGroup.rotation.y = pAngle;
-                keyGroup.rotation.y += 0.07;
-
-                // Key Pickup Check (+6 Coins)
-                if (!hasKey && playerGroup.position.distanceTo(keyGroup.position) < 3.5) {
-                    hasKey = true;
-                    totalCoins += 6;
-                    document.getElementById('coin-cnt').innerText = totalCoins;
-                    document.getElementById('key-hud').innerText = "🔑 Golden Key: ACQUIRED! +6 COINS!";
-                    document.getElementById('key-hud').style.color = "#2ed573";
-                    scene.remove(keyGroup);
-                    
-                    setTimeout(() => {
-                        gameActive = false;
-                        document.getElementById('win-screen').style.display = 'flex';
-                    }, 600);
-                }
-
-                // Enemy AI & Dynamic Weather Change
-                const rotToPlayer = Math.atan2(playerGroup.position.x - enemyGroup.position.x, playerGroup.position.z - enemyGroup.position.z);
-                enemyGroup.rotation.y = rotToPlayer;
-                enemyGroup.position.x += Math.sin(rotToPlayer) * enemySpeed;
-                enemyGroup.position.z += Math.cos(rotToPlayer) * enemySpeed;
-
-                eventTimer++;
-                if (eventTimer > 350) {
-                    eventTimer = 0;
-                    enemyGroup.position.x = playerGroup.position.x + (Math.random() - 0.5) * 50;
-                    enemyGroup.position.z = playerGroup.position.z + (Math.random() - 0.5) * 50;
-
-                    const weatherColors = [0xff0000, 0x00ffcc, 0xff00ff, 0xffff00, 0x111122];
-                    const randomSky = weatherColors[Math.floor(Math.random() * weatherColors.length)];
-                    scene.background.setHex(randomSky);
-                    scene.fog.color.setHex(randomSky);
-                    dynamicSun.color.setHex(randomSky);
-
-                    document.getElementById('event-alert').style.display = 'block';
-                    alertClock = 90;
-                }
-
-                if (alertClock > 0) {
-                    alertClock--;
-                    if (alertClock === 0) document.getElementById('event-alert').style.display = 'none';
-                }
-
-                if (playerGroup.position.distanceTo(enemyGroup.position) < 2.3) {
-                    alert("💀 CAUGHT BY ENEMY! GAME OVER!");
-                    location.reload();
-                }
-
-                // Camera Follow
-                camera.position.x = playerGroup.position.x + Math.sin(pAngle) * 9.5;
-                camera.position.z = playerGroup.position.z + Math.cos(pAngle) * 9.5;
-                camera.position.y = playerGroup.position.y + 4.8;
-                camera.lookAt(playerGroup.position.x, playerGroup.position.y + 1.5, playerGroup.position.z);
-            }
-
-            renderer.render(scene, camera);
+      });
+      state.lavaPits.forEach(l => {
+        const p = randPos(90);
+        if (Math.hypot(p.x - state.player.x, p.y - state.player.y) > 95) {
+          l.x = p.x; l.y = p.y;
         }
+      });
+      state.shuffleCountdown = 10;
+    }
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+    function resetGame() {
+      state.collected = 0;
+      state.gameOver = false;
+      state.won = false;
+      state.onVehicle = true;
+      state.shuffleCountdown = 10;
+      state.player = { x: 120, y: 120, r: 12, z: 0, vz: 0 };
+      state.ghost = {
+        x: 820, y: 480, r: 16,
+        speed: state.difficulty === 'easy' ? 1.5 : state.difficulty === 'medium' ? 2.0 : 2.5
+      };
+      spawnWorldItems();
+      spawnNpcs();
+      updateHud();
+    }
 
-        animate();
-    </script>
+    function toggleShop() {
+      const modal = document.getElementById('shopModal');
+      const isOpen = modal.style.display === 'flex';
+      modal.style.display = isOpen ? 'none' : 'flex';
+      if (!isOpen) renderShop();
+    }
+
+    function renderShop() {
+      const list = document.getElementById('shopList');
+      list.innerHTML = '';
+      VEHICLES.forEach(v => {
+        const owned = state.ownedVehicles.includes(v.id);
+        const equipped = state.equippedVehicle === v.id;
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.innerHTML = `
+          <div>
+            <strong>${v.name}</strong>
+            <div style="font-size:12px;color:#94a3b8;">Speed: ${v.speed} | Cost: ${v.cost} Coins</div>
+          </div>
+        `;
+        const btn = document.createElement('button');
+        if (equipped) {
+          btn.textContent = 'Equipped';
+          btn.className = 'secondary';
+        } else if (owned) {
+          btn.textContent = 'Equip';
+          btn.onclick = () => { state.equippedVehicle = v.id; updateHud(); renderShop(); };
+        } else {
+          btn.textContent = `Buy (${v.cost})`;
+          btn.disabled = state.coins < v.cost;
+          btn.onclick = () => {
+            if (state.coins >= v.cost) {
+              state.coins -= v.cost;
+              state.ownedVehicles.push(v.id);
+              state.equippedVehicle = v.id;
+              updateHud();
+              renderShop();
+            }
+          };
+        }
+        row.appendChild(btn);
+        list.appendChild(row);
+      });
+    }
+
+    function updateHud() {
+      const veh = getCurrentVehicle();
+      document.getElementById('coinCount').textContent = state.coins;
+      document.getElementById('targetCount').textContent = `${state.collected}/${state.targetCoins}`;
+      document.getElementById('vehName').textContent = veh.name;
+      document.getElementById('boardStatus').textContent = state.onVehicle ? 'Riding (E: Exit)' : 'On Foot (E: Board)';
+      document.getElementById('timeLabel').textContent = TIMES[state.timeIndex].name;
+      document.getElementById('shuffleTimer').textContent = `${Math.ceil(state.shuffleCountdown)}s`;
+    }
+
+    function update(dt) {
+      if (state.gameOver || state.won) return;
+
+      const veh = getCurrentVehicle();
+      const speed = state.onVehicle ? veh.speed : 2.5;
+      let dx = 0, dy = 0;
+      if (keys['w'] || keys['arrowup']) dy -= 1;
+      if (keys['s'] || keys['arrowdown']) dy += 1;
+      if (keys['a'] || keys['arrowleft']) dx -= 1;
+      if (keys['d'] || keys['arrowright']) dx += 1;
+
+      if (dx !== 0 && dy !== 0) {
+        const inv = 1 / Math.SQRT2;
+        dx *= inv; dy *= inv;
+      }
+
+      state.player.x = Math.max(20, Math.min(canvas.width - 20, state.player.x + dx * speed));
+      state.player.y = Math.max(20, Math.min(canvas.height - 20, state.player.y + dy * speed));
+
+      // Jump physics
+      if (state.player.z > 0 || state.player.vz > 0) {
+        state.player.z += state.player.vz;
+        state.player.vz -= 0.35;
+        if (state.player.z <= 0) {
+          state.player.z = 0;
+          state.player.vz = 0;
+        }
+      }
+
+      // NPC pedestrians
+      state.npcs.forEach(npc => {
+        npc.x += npc.vx;
+        npc.y += npc.vy;
+        if (npc.x < 20 || npc.x > canvas.width - 20) npc.vx *= -1;
+        if (npc.y < 20 || npc.y > canvas.height - 20) npc.vy *= -1;
+      });
+
+      // Ghost chase & shuffle timer
+      const gx = state.player.x - state.ghost.x;
+      const gy = state.player.y - state.ghost.y;
+      const gDist = Math.hypot(gx, gy) || 1;
+      state.ghost.x += (gx / gDist) * state.ghost.speed;
+      state.ghost.y += (gy / gDist) * state.ghost.speed;
+
+      state.shuffleCountdown -= dt;
+      if (state.shuffleCountdown <= 0) {
+        shuffleMapByGhost();
+      }
+
+      // Coin pickup
+      state.coinItems.forEach(c => {
+        if (!c.taken && Math.hypot(state.player.x - c.x, state.player.y - c.y) < state.player.r + c.r + 4) {
+          c.taken = true;
+          state.coins += 1;
+          state.collected += 1;
+          if (state.collected >= state.targetCoins) {
+            state.won = true;
+          }
+        }
+      });
+
+      // Lava check (only dangerous when grounded)
+      if (state.player.z < 6) {
+        for (const l of state.lavaPits) {
+          if (Math.hypot(state.player.x - l.x, state.player.y - l.y) < l.r - 4) {
+            state.gameOver = true;
+            break;
+          }
+        }
+      }
+
+      // Ghost catch check
+      if (Math.hypot(state.player.x - state.ghost.x, state.player.y - state.ghost.y) < state.player.r + state.ghost.r - 3) {
+        state.gameOver = true;
+      }
+
+      updateHud();
+    }
+
+    function draw() {
+      const time = TIMES[state.timeIndex];
+      ctx.fillStyle = time.grass;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Street roads & pads
+      ctx.fillStyle = time.road;
+      ctx.fillRect(0, 250, canvas.width, 90);
+      ctx.fillRect(430, 0, 95, canvas.height);
+
+      ctx.strokeStyle = '#facc15';
+      ctx.setLineDash([16, 14]);
+      ctx.beginPath();
+      ctx.moveTo(0, 295); ctx.lineTo(canvas.width, 295);
+      ctx.moveTo(477, 0); ctx.lineTo(477, canvas.height);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Lava pits
+      state.lavaPits.forEach(l => {
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(l.x, l.y, l.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#fb923c';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      });
+
+      // Coins
+      state.coinItems.forEach(c => {
+        if (c.taken) return;
+        ctx.fillStyle = '#fbbf24';
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+
+      // Street pedestrians / NPCs
+      state.npcs.forEach(npc => {
+        ctx.fillStyle = '#e2e8f0';
+        ctx.beginPath();
+        ctx.arc(npc.x, npc.y, npc.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Ghost
+      ctx.fillStyle = '#f8fafc';
+      ctx.beginPath();
+      ctx.arc(state.ghost.x, state.ghost.y, state.ghost.r, Math.PI, 0);
+      ctx.lineTo(state.ghost.x + state.ghost.r, state.ghost.y + state.ghost.r);
+      ctx.lineTo(state.ghost.x - state.ghost.r, state.ghost.y + state.ghost.r);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(state.ghost.x - 6, state.ghost.y - 4, 4, 4);
+      ctx.fillRect(state.ghost.x + 2, state.ghost.y - 4, 4, 4);
+
+      // Player & vehicle
+      const veh = getCurrentVehicle();
+      const py = state.player.y - state.player.z;
+      if (state.onVehicle) {
+        ctx.fillStyle = veh.color;
+        ctx.fillRect(state.player.x - 16, py - 10, 32, 20);
+      }
+      ctx.fillStyle = '#22c55e';
+      ctx.beginPath();
+      ctx.arc(state.player.x, py, state.player.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Time of day overlay
+      ctx.fillStyle = time.tint;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (state.gameOver || state.won) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.72)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 34px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(state.won ? '🎉 Level Clear! Coins Collected!' : '💀 Caught / Burned! Try Again', canvas.width / 2, canvas.height / 2 - 10);
+        ctx.font = '16px sans-serif';
+        ctx.fillText('नीचे Restart बटन दबाकर फिर से खेलो', canvas.width / 2, canvas.height / 2 + 26);
+      }
+    }
+
+    let lastTime = performance.now();
+    function loop(now) {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+      update(dt);
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    resetGame();
+    requestAnimationFrame(loop);
+  </script>
 </body>
 </html>
