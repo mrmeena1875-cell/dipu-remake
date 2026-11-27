@@ -3,66 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deepesh Remake — Ultimate Escape</title>
+  <title>Deepesh Meena Remake — Ultimate Escape</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: #111; color: #fff; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+    body {
+      background: #090d16; color: #fff; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100vh; user-select: none;
+    }
+    #brandBanner {
+      position: fixed; top: 54px; left: 50%; transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(250, 204, 21, 0.35);
+      color: #fde047; padding: 4px 14px; border-radius: 999px; font-size: 12px;
+      font-weight: 700; letter-spacing: 0.5px; pointer-events: none; z-index: 9;
+    }
     #hud {
-      position: fixed; top: 12px; left: 12px; right: 12px;
-      display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center;
+      position: fixed; top: 10px; left: 10px; right: 10px;
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center;
       pointer-events: none; z-index: 10;
     }
     .pill {
-      background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.16);
-      padding: 8px 14px; border-radius: 999px; font-size: 14px; backdrop-filter: blur(6px);
+      background: rgba(15, 23, 42, 0.88); border: 1px solid rgba(255,255,255,0.16);
+      padding: 7px 13px; border-radius: 999px; font-size: 13px; backdrop-filter: blur(6px);
     }
     .controls-bar {
-      position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
+      position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
       display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; z-index: 10;
     }
     button {
-      background: #2563eb; color: #fff; border: none; padding: 8px 14px;
+      background: #2563eb; color: #fff; border: none; padding: 8px 13px;
       border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;
+      transition: transform 0.08s ease, background 0.15s ease;
     }
-    button:hover { background: #1d4ed8; }
+    button:hover:not(:disabled) { background: #1d4ed8; }
+    button:active:not(:disabled) { transform: scale(0.97); }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
     button.secondary { background: #334155; }
-    button.secondary:hover { background: #475569; }
+    button.secondary:hover:not(:disabled) { background: #475569; }
+    button.active-diff { background: #16a34a; }
+    #toast {
+      position: fixed; top: 82px; left: 50%; transform: translateX(-50%);
+      background: rgba(239, 68, 68, 0.92); color: #fff; padding: 6px 14px;
+      border-radius: 8px; font-size: 13px; font-weight: 600; display: none; z-index: 15;
+    }
     #shopModal {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78);
       z-index: 20; align-items: center; justify-content: center;
     }
     #shopBox {
       background: #1e293b; border: 1px solid #475569; border-radius: 14px;
-      padding: 20px; width: min(92vw, 460px);
+      padding: 20px; width: min(92vw, 470px);
     }
     .item-row {
       display: flex; justify-content: space-between; align-items: center;
       background: #0f172a; padding: 10px 12px; border-radius: 8px; margin-top: 10px;
     }
-    canvas { display: block; border: 2px solid #334155; border-radius: 8px; background: #1f2937; }
+    canvas {
+      display: block; border: 2px solid #334155; border-radius: 10px;
+      background: #1f2937; max-width: 96vw; max-height: 76vh;
+    }
   </style>
 </head>
 <body>
   <div id="hud">
-    <div class="pill">🪙 Coins: <strong id="coinCount">0</strong> | 🎯 Target: <strong id="targetCount">6</strong></div>
-    <div class="pill">🚗 Vehicle: <strong id="vehName">Street Bike</strong> (<span id="boardStatus">Riding — Press E to exit</span>)</div>
+    <div class="pill">🪙 Coins: <strong id="coinCount">0</strong> | 🎯 Target: <strong id="targetCount">0/6</strong></div>
+    <div class="pill">🚗 Vehicle: <strong id="vehName">Street Bike</strong> (<span id="boardStatus">Riding — Press E</span>)</div>
     <div class="pill">🌗 Time: <strong id="timeLabel">Morning</strong> (Press T) | 👻 Shuffle in: <strong id="shuffleTimer">10s</strong></div>
   </div>
+
+  <div id="brandBanner">⚡ DEEPESH MEENA REMAKE • WASD/Arrows | E: Ride/Exit | Space: Jump | T: Time</div>
+  <div id="toast">👻 घोस्ट ने मैप शफल कर दिया!</div>
 
   <canvas id="game" width="960" height="600"></canvas>
 
   <div class="controls-bar">
-    <button class="secondary" onclick="setDifficulty('easy')">Easy (6 Coins)</button>
-    <button class="secondary" onclick="setDifficulty('medium')">Medium (12 Coins)</button>
-    <button class="secondary" onclick="setDifficulty('hard')">Hard (18 Coins)</button>
+    <button id="btn-easy" class="secondary active-diff" onclick="setDifficulty('easy')">Easy (6 Coins)</button>
+    <button id="btn-medium" class="secondary" onclick="setDifficulty('medium')">Medium (12 Coins)</button>
+    <button id="btn-hard" class="secondary" onclick="setDifficulty('hard')">Hard (18 Coins)</button>
     <button onclick="toggleShop()">🛒 Garage & Shop</button>
     <button class="secondary" onclick="resetGame()">🔄 Restart</button>
   </div>
 
   <div id="shopModal">
     <div id="shopBox">
-      <h3>🚗 Vehicles Garage</h3>
-      <p style="font-size:13px;color:#cbd5e1;margin-top:4px;">कॉइन्स से तेज़ बाइक और सुपरकार खरीदें!</p>
+      <h3>🚗 Vehicles Garage — Deepesh Meena</h3>
+      <p style="font-size:13px;color:#cbd5e1;margin-top:4px;">कॉइन्स जमा करके तेज़ बाइक और सुपरकार खरीदें!</p>
       <div id="shopList"></div>
       <div style="margin-top:14px;text-align:right;">
         <button class="secondary" onclick="toggleShop()">Close</button>
@@ -75,15 +100,16 @@
     const ctx = canvas.getContext('2d');
 
     const VEHICLES = [
-      { id: 'bike', name: 'Street Bike', cost: 0, speed: 4.6, color: '#38bdf8' },
-      { id: 'sportbike', name: 'Turbo Bike', cost: 6, speed: 6.2, color: '#f97316' },
-      { id: 'lambo', name: 'Lamborghini V12', cost: 14, speed: 8.0, color: '#eab308' }
+      { id: 'bike', name: 'Street Bike', type: 'bike', cost: 0, speed: 4.8, color: '#38bdf8' },
+      { id: 'sportbike', name: 'Turbo Bike', type: 'bike', cost: 6, speed: 6.4, color: '#f97316' },
+      { id: 'gtcar', name: 'Drift GT Car', type: 'car', cost: 10, speed: 7.2, color: '#a855f7' },
+      { id: 'lambo', name: 'Lamborghini V12', type: 'car', cost: 16, speed: 8.6, color: '#eab308' }
     ];
 
     const TIMES = [
       { name: 'Morning', tint: 'rgba(255, 244, 180, 0.08)', road: '#374151', grass: '#166534' },
-      { name: 'Evening', tint: 'rgba(251, 146, 60, 0.18)', road: '#292524', grass: '#14532d' },
-      { name: 'Night', tint: 'rgba(15, 23, 42, 0.45)', road: '#1e293b', grass: '#052e16' }
+      { name: 'Evening', tint: 'rgba(251, 146, 60, 0.20)', road: '#292524', grass: '#14532d' },
+      { name: 'Night', tint: 'rgba(15, 23, 42, 0.48)', road: '#1e293b', grass: '#052e16' }
     ];
 
     let state = {
@@ -98,15 +124,28 @@
       shuffleCountdown: 10,
       gameOver: false,
       won: false,
+      failReason: '',
       player: { x: 120, y: 120, r: 12, z: 0, vz: 0 },
-      ghost: { x: 820, y: 480, r: 16, speed: 1.7 },
+      ghost: { x: 820, y: 480, r: 16, speed: 1.5 },
       coinItems: [],
       lavaPits: [],
       npcs: []
     };
 
+    let toastTimeout = null;
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.style.display = 'block';
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => { el.style.display = 'none'; }, 2200);
+    }
+
     const keys = {};
     window.addEventListener('keydown', (e) => {
+      if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+      }
       const k = e.key.toLowerCase();
       if (!keys[k]) {
         if (k === 'e') toggleVehicle();
@@ -128,8 +167,8 @@
     }
 
     function jumpPlayer() {
-      if (state.player.z === 0) {
-        state.player.vz = 6.5;
+      if (!state.gameOver && !state.won && state.player.z === 0) {
+        state.player.vz = 6.8;
       }
     }
 
@@ -141,10 +180,13 @@
     function setDifficulty(diff) {
       state.difficulty = diff;
       state.targetCoins = diff === 'easy' ? 6 : diff === 'medium' ? 12 : 18;
+      ['easy', 'medium', 'hard'].forEach(d => {
+        document.getElementById(`btn-${d}`).classList.toggle('active-diff', d === diff);
+      });
       resetGame();
     }
 
-    function randPos(margin = 60) {
+    function randPos(margin = 65) {
       return {
         x: margin + Math.random() * (canvas.width - margin * 2),
         y: margin + Math.random() * (canvas.height - margin * 2)
@@ -158,11 +200,15 @@
         state.coinItems.push({ x: p.x, y: p.y, r: 9, taken: false });
       }
 
-      const lavaCount = state.difficulty === 'easy' ? 4 : state.difficulty === 'medium' ? 7 : 10;
+      const lavaCount = state.difficulty === 'easy' ? 5 : state.difficulty === 'medium' ? 8 : 12;
       state.lavaPits = [];
-      for (let i = 0; i < lavaCount; i++) {
+      let attempts = 0;
+      while (state.lavaPits.length < lavaCount && attempts < 200) {
+        attempts++;
         const p = randPos(90);
-        if (Math.hypot(p.x - state.player.x, p.y - state.player.y) > 110) {
+        const farFromPlayer = Math.hypot(p.x - state.player.x, p.y - state.player.y) > 125;
+        const farFromOtherLava = state.lavaPits.every(l => Math.hypot(p.x - l.x, p.y - l.y) > 75);
+        if (farFromPlayer && farFromOtherLava) {
           state.lavaPits.push({ x: p.x, y: p.y, r: 28 });
         }
       }
@@ -171,12 +217,12 @@
     function spawnNpcs() {
       state.npcs = [];
       for (let i = 0; i < 12; i++) {
-        const p = randPos(40);
+        const p = randPos(45);
         const angle = Math.random() * Math.PI * 2;
         state.npcs.push({
           x: p.x, y: p.y, r: 8,
-          vx: Math.cos(angle) * 1.1,
-          vy: Math.sin(angle) * 1.1
+          vx: Math.cos(angle) * 1.15,
+          vy: Math.sin(angle) * 1.15
         });
       }
     }
@@ -189,24 +235,29 @@
         }
       });
       state.lavaPits.forEach(l => {
-        const p = randPos(90);
-        if (Math.hypot(p.x - state.player.x, p.y - state.player.y) > 95) {
-          l.x = p.x; l.y = p.y;
+        for (let i = 0; i < 30; i++) {
+          const p = randPos(90);
+          if (Math.hypot(p.x - state.player.x, p.y - state.player.y) > 110) {
+            l.x = p.x; l.y = p.y;
+            break;
+          }
         }
       });
       state.shuffleCountdown = 10;
+      showToast('👻 घोस्ट ने कॉइन्स और लावा के गड्ढे शफल कर दिए!');
     }
 
     function resetGame() {
       state.collected = 0;
       state.gameOver = false;
       state.won = false;
+      state.failReason = '';
       state.onVehicle = true;
       state.shuffleCountdown = 10;
       state.player = { x: 120, y: 120, r: 12, z: 0, vz: 0 };
       state.ghost = {
         x: 820, y: 480, r: 16,
-        speed: state.difficulty === 'easy' ? 1.5 : state.difficulty === 'medium' ? 2.0 : 2.5
+        speed: state.difficulty === 'easy' ? 1.5 : state.difficulty === 'medium' ? 2.05 : 2.6
       };
       spawnWorldItems();
       spawnNpcs();
@@ -230,7 +281,7 @@
         row.className = 'item-row';
         row.innerHTML = `
           <div>
-            <strong>${v.name}</strong>
+            <strong>${v.name}</strong> <span style="font-size:11px;color:#38bdf8;">[${v.type.toUpperCase()}]</span>
             <div style="font-size:12px;color:#94a3b8;">Speed: ${v.speed} | Cost: ${v.cost} Coins</div>
           </div>
         `;
@@ -240,7 +291,12 @@
           btn.className = 'secondary';
         } else if (owned) {
           btn.textContent = 'Equip';
-          btn.onclick = () => { state.equippedVehicle = v.id; updateHud(); renderShop(); };
+          btn.onclick = () => {
+            state.equippedVehicle = v.id;
+            state.onVehicle = true;
+            updateHud();
+            renderShop();
+          };
         } else {
           btn.textContent = `Buy (${v.cost})`;
           btn.disabled = state.coins < v.cost;
@@ -249,6 +305,7 @@
               state.coins -= v.cost;
               state.ownedVehicles.push(v.id);
               state.equippedVehicle = v.id;
+              state.onVehicle = true;
               updateHud();
               renderShop();
             }
@@ -266,14 +323,14 @@
       document.getElementById('vehName').textContent = veh.name;
       document.getElementById('boardStatus').textContent = state.onVehicle ? 'Riding (E: Exit)' : 'On Foot (E: Board)';
       document.getElementById('timeLabel').textContent = TIMES[state.timeIndex].name;
-      document.getElementById('shuffleTimer').textContent = `${Math.ceil(state.shuffleCountdown)}s`;
+      document.getElementById('shuffleTimer').textContent = `${Math.max(0, Math.ceil(state.shuffleCountdown))}s`;
     }
 
     function update(dt) {
       if (state.gameOver || state.won) return;
 
       const veh = getCurrentVehicle();
-      const speed = state.onVehicle ? veh.speed : 2.5;
+      const speed = state.onVehicle ? veh.speed : 2.6;
       let dx = 0, dy = 0;
       if (keys['w'] || keys['arrowup']) dy -= 1;
       if (keys['s'] || keys['arrowdown']) dy += 1;
@@ -285,28 +342,25 @@
         dx *= inv; dy *= inv;
       }
 
-      state.player.x = Math.max(20, Math.min(canvas.width - 20, state.player.x + dx * speed));
-      state.player.y = Math.max(20, Math.min(canvas.height - 20, state.player.y + dy * speed));
+      state.player.x = Math.max(22, Math.min(canvas.width - 22, state.player.x + dx * speed));
+      state.player.y = Math.max(22, Math.min(canvas.height - 22, state.player.y + dy * speed));
 
-      // Jump physics
       if (state.player.z > 0 || state.player.vz > 0) {
         state.player.z += state.player.vz;
-        state.player.vz -= 0.35;
+        state.player.vz -= 0.36;
         if (state.player.z <= 0) {
           state.player.z = 0;
           state.player.vz = 0;
         }
       }
 
-      // NPC pedestrians
       state.npcs.forEach(npc => {
         npc.x += npc.vx;
         npc.y += npc.vy;
-        if (npc.x < 20 || npc.x > canvas.width - 20) npc.vx *= -1;
-        if (npc.y < 20 || npc.y > canvas.height - 20) npc.vy *= -1;
+        if (npc.x < 22 || npc.x > canvas.width - 22) npc.vx *= -1;
+        if (npc.y < 22 || npc.y > canvas.height - 22) npc.vy *= -1;
       });
 
-      // Ghost chase & shuffle timer
       const gx = state.player.x - state.ghost.x;
       const gy = state.player.y - state.ghost.y;
       const gDist = Math.hypot(gx, gy) || 1;
@@ -318,9 +372,8 @@
         shuffleMapByGhost();
       }
 
-      // Coin pickup
       state.coinItems.forEach(c => {
-        if (!c.taken && Math.hypot(state.player.x - c.x, state.player.y - c.y) < state.player.r + c.r + 4) {
+        if (!c.taken && Math.hypot(state.player.x - c.x, state.player.y - c.y) < state.player.r + c.r + 5) {
           c.taken = true;
           state.coins += 1;
           state.collected += 1;
@@ -330,19 +383,19 @@
         }
       });
 
-      // Lava check (only dangerous when grounded)
       if (state.player.z < 6) {
         for (const l of state.lavaPits) {
           if (Math.hypot(state.player.x - l.x, state.player.y - l.y) < l.r - 4) {
             state.gameOver = true;
+            state.failReason = '🔥 लावा के गड्ढे में गिर गए!';
             break;
           }
         }
       }
 
-      // Ghost catch check
-      if (Math.hypot(state.player.x - state.ghost.x, state.player.y - state.ghost.y) < state.player.r + state.ghost.r - 3) {
+      if (!state.gameOver && Math.hypot(state.player.x - state.ghost.x, state.player.y - state.ghost.y) < state.player.r + state.ghost.r - 3) {
         state.gameOver = true;
+        state.failReason = '👻 घोस्ट ने पकड़ लिया!';
       }
 
       updateHud();
@@ -353,7 +406,6 @@
       ctx.fillStyle = time.grass;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Street roads & pads
       ctx.fillStyle = time.road;
       ctx.fillRect(0, 250, canvas.width, 90);
       ctx.fillRect(430, 0, 95, canvas.height);
@@ -366,7 +418,6 @@
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Lava pits
       state.lavaPits.forEach(l => {
         ctx.fillStyle = '#ef4444';
         ctx.beginPath();
@@ -377,7 +428,6 @@
         ctx.stroke();
       });
 
-      // Coins
       state.coinItems.forEach(c => {
         if (c.taken) return;
         ctx.fillStyle = '#fbbf24';
@@ -389,7 +439,6 @@
         ctx.stroke();
       });
 
-      // Street pedestrians / NPCs
       state.npcs.forEach(npc => {
         ctx.fillStyle = '#e2e8f0';
         ctx.beginPath();
@@ -397,7 +446,6 @@
         ctx.fill();
       });
 
-      // Ghost
       ctx.fillStyle = '#f8fafc';
       ctx.beginPath();
       ctx.arc(state.ghost.x, state.ghost.y, state.ghost.r, Math.PI, 0);
@@ -409,29 +457,46 @@
       ctx.fillRect(state.ghost.x - 6, state.ghost.y - 4, 4, 4);
       ctx.fillRect(state.ghost.x + 2, state.ghost.y - 4, 4, 4);
 
-      // Player & vehicle
       const veh = getCurrentVehicle();
       const py = state.player.y - state.player.z;
+
+      if (state.player.z > 0) {
+        ctx.fillStyle = 'rgba(0,0,0,0.35)';
+        ctx.beginPath();
+        ctx.ellipse(state.player.x, state.player.y + 8, 14, 7, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
       if (state.onVehicle) {
         ctx.fillStyle = veh.color;
-        ctx.fillRect(state.player.x - 16, py - 10, 32, 20);
+        if (veh.type === 'car') {
+          ctx.fillRect(state.player.x - 20, py - 12, 40, 24);
+          ctx.fillStyle = '#0f172a';
+          ctx.fillRect(state.player.x - 10, py - 8, 18, 16);
+        } else {
+          ctx.fillRect(state.player.x - 15, py - 7, 30, 14);
+        }
       }
+
       ctx.fillStyle = '#22c55e';
       ctx.beginPath();
       ctx.arc(state.player.x, py, state.player.r, 0, Math.PI * 2);
       ctx.fill();
 
-      // Time of day overlay
       ctx.fillStyle = time.tint;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       if (state.gameOver || state.won) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.72)';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = '#fff';
         ctx.font = 'bold 34px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(state.won ? '🎉 Level Clear! Coins Collected!' : '💀 Caught / Burned! Try Again', canvas.width / 2, canvas.height / 2 - 10);
+        ctx.fillText(
+          state.won ? '🎉 Level Clear! Deepesh Meena Remake!' : state.failReason || '💀 Game Over!',
+          canvas.width / 2,
+          canvas.height / 2 - 12
+        );
         ctx.font = '16px sans-serif';
         ctx.fillText('नीचे Restart बटन दबाकर फिर से खेलो', canvas.width / 2, canvas.height / 2 + 26);
       }
@@ -439,7 +504,7 @@
 
     let lastTime = performance.now();
     function loop(now) {
-      const dt = (now - lastTime) / 1000;
+      const dt = Math.min(0.1, (now - lastTime) / 1000);
       lastTime = now;
       update(dt);
       draw();
