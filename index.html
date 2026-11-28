@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DIPESH MEENA REMAKE 2026 - GHOST WEATHER & HIGH GRAPHICS EDITION</title>
+    <title>DIPESH MEENA REMAKE 2026 - GHOST WEATHER & MULTI-FLOOR EDITION</title>
     <style>
         * { box-sizing: border-box; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; margin: 0; padding: 0; }
         body { overflow: hidden; background: #000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; touch-action: none; }
@@ -31,14 +31,14 @@
         }
 
         .menu-box {
-            position: relative; width: 92%; max-width: 640px; height: 92%; max-height: 760px;
+            position: relative; width: 92%; max-width: 660px; height: 92%; max-height: 780px;
             border: 4px solid #ff3838; border-radius: 20px; padding: 20px;
             display: flex; flex-direction: column; align-items: center; justify-content: space-between;
             box-shadow: inset 0 0 60px rgba(255,0,0,0.8), 0 0 50px rgba(255, 0, 0, 0.5);
             background: rgba(10, 2, 5, 0.96); color: #fff; overflow-y: auto;
         }
-        .title-main { font-size: clamp(24px, 5vw, 44px); font-weight: 900; letter-spacing: 4px; color: #ff3838; text-shadow: 4px 4px 0px #000; text-align: center; }
-        .subtitle { font-size: clamp(10px, 2vw, 13px); color: #ffa502; letter-spacing: 2px; font-weight: bold; margin-top: 2px; }
+        .title-main { font-size: clamp(22px, 4.6vw, 42px); font-weight: 900; letter-spacing: 3px; color: #ff3838; text-shadow: 4px 4px 0px #000; text-align: center; }
+        .subtitle { font-size: clamp(10px, 2vw, 13px); color: #ffa502; letter-spacing: 2px; font-weight: bold; margin-top: 2px; text-align: center; }
 
         .options-panel { width: 100%; display: flex; flex-direction: column; gap: 10px; background: rgba(255,0,0,0.06); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,0,0,0.3); }
         .option-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; gap: 10px; flex-wrap: wrap; }
@@ -46,7 +46,7 @@
 
         .btn-action {
             background: #ff3838; color: #fff; border: 3px solid #fff;
-            padding: 10px 0; width: 230px; max-width: 80%; font-size: clamp(16px, 3vw, 22px); font-weight: 900;
+            padding: 10px 0; width: 240px; max-width: 82%; font-size: clamp(16px, 3vw, 22px); font-weight: 900;
             letter-spacing: 2px; border-radius: 12px; cursor: pointer;
             box-shadow: 5px 5px 0px #000; text-align: center; transition: 0.2s;
         }
@@ -61,59 +61,76 @@
         .hud-top-left {
             position: absolute; top: 14px; left: 14px;
             background: rgba(15, 5, 10, 0.88); border: 2px solid #ff3838;
-            color: #fff; font-size: clamp(11px, 1.9vw, 14px); font-weight: bold;
-            padding: 8px 14px; border-radius: 10px; pointer-events: auto;
-            display: flex; align-items: center; gap: 8px; flex-wrap: wrap; max-width: 72vw;
+            color: #fff; font-size: clamp(11px, 1.8vw, 13.5px); font-weight: bold;
+            padding: 8px 12px; border-radius: 10px; pointer-events: auto;
+            display: flex; align-items: center; gap: 7px; flex-wrap: wrap; max-width: 74vw;
         }
         .hud-weather-btn {
             background: #251347; color: #f3e8ff; border: 1.5px solid #c084fc;
-            padding: 3px 9px; border-radius: 6px; font-size: 12px; font-weight: 800;
+            padding: 3px 8px; border-radius: 6px; font-size: 11.5px; font-weight: 800;
             cursor: pointer; transition: 0.15s;
         }
         .hud-weather-btn:hover { background: #6b21a8; }
 
-        .hud-top-right { position: absolute; top: 14px; right: 14px; background: rgba(120, 0, 0, 0.9); border: 2px solid #ff0000; color: #fff; font-size: clamp(11px, 2vw, 14px); font-weight: bold; padding: 8px 14px; border-radius: 10px; }
+        .hud-top-right { position: absolute; top: 14px; right: 14px; background: rgba(120, 0, 0, 0.9); border: 2px solid #ff0000; color: #fff; font-size: clamp(11px, 1.9vw, 13.5px); font-weight: bold; padding: 8px 12px; border-radius: 10px; }
         #event-alert { position: absolute; top: 68px; width: 100%; text-align: center; color: #fde047; font-size: clamp(15px, 2.8vw, 22px); font-weight: 900; display: none; text-shadow: 2px 2px 8px #000; }
 
-        /* --- MOBILE RIGHT-SIDE CONTROLS --- */
+        /* --- MOBILE CONTROLS: LEFT = UP/DOWN, RIGHT = LEFT/RIGHT --- */
         #mobile-controls {
             display: none;
             position: absolute;
-            right: 18px;
-            bottom: 18px;
+            inset: 0;
             z-index: 80;
-            pointer-events: auto;
-            flex-direction: row;
-            align-items: flex-end;
-            gap: 14px;
+            pointer-events: none;
         }
 
-        .mobile-cluster {
+        .mobile-side-left {
+            position: absolute;
+            left: 18px;
+            bottom: 18px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 10px;
+            pointer-events: auto;
+        }
+
+        .mobile-side-right {
+            position: absolute;
+            right: 18px;
+            bottom: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            pointer-events: auto;
+        }
+
+        .mobile-action-row {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
         }
 
         .mobile-lr-row {
             display: flex;
             flex-direction: row;
-            gap: 10px;
+            gap: 12px;
         }
 
         .m-btn {
             width: 58px;
             height: 58px;
             border-radius: 14px;
-            background: rgba(20, 20, 28, 0.78);
-            border: 2px solid rgba(255, 56, 56, 0.9);
+            background: rgba(20, 20, 28, 0.8);
+            border: 2px solid rgba(255, 56, 56, 0.92);
             color: #fff;
             font-size: 22px;
             font-weight: 900;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.65);
             cursor: pointer;
             touch-action: none;
         }
@@ -124,7 +141,7 @@
         }
 
         .m-btn-small {
-            width: 64px;
+            width: 66px;
             height: 36px;
             font-size: 11px;
             letter-spacing: 0.5px;
@@ -132,12 +149,12 @@
 
         .m-btn-bike {
             border-color: #38bdf8;
-            background: rgba(15, 35, 55, 0.82);
+            background: rgba(15, 35, 55, 0.84);
         }
 
         .m-btn-weather {
             border-color: #c084fc;
-            background: rgba(45, 18, 75, 0.85);
+            background: rgba(45, 18, 75, 0.86);
         }
 
         /* Rotate prompt for portrait phones */
@@ -160,7 +177,7 @@
 
         @media (hover: none) and (pointer: coarse), (max-width: 900px) {
             body.playing-mobile #mobile-controls {
-                display: flex;
+                display: block;
             }
             @media (orientation: portrait) {
                 body.playing-mobile #rotate-notice {
@@ -192,11 +209,11 @@
         <div class="menu-box">
             <div style="text-align: center;">
                 <div style="font-size: 38px;">🩸</div>
-                <div class="title-main">DIPU REMAKE</div>
-                <div class="subtitle">GHOST WEATHER & HIGH GRAPHICS 2026</div>
+                <div class="title-main">DIPESH MEENA REMAKE</div>
+                <div class="subtitle">GHOST AUTO-WEATHER & 3-FLOOR BUILDINGS 2026</div>
             </div>
             <div class="rules-box">
-                💀 <b>CONTROLS:</b> PC: WASD / Arrows, <b>'E'</b> Sit/Dismount, <b>'G'</b> Ghost Weather. Mobile: Horizontal + Right buttons. Enter colorful buildings & find the Golden Key!
+                💀 <b>CONTROLS:</b> PC: WASD / Arrows, <b>'E'</b> Sit/Dismount, <b>'G'</b> Weather. Mobile: Horizontal + Left (Up/Down) & Right (Left/Right). Explore 1st, 2nd & 3rd floors inside buildings!
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center;">
                 <button class="btn-action" id="btn-shop">SHOP & GARAGE</button>
@@ -211,7 +228,7 @@
             <div style="text-align: center;">
                 <div style="font-size: 32px;">🛒</div>
                 <div class="title-main" style="font-size: 34px;">BIKE SHOP</div>
-                <div class="subtitle">CHOOSE YOUR RIDE</div>
+                <div class="subtitle">DIPESH MEENA REMAKE GARAGE</div>
             </div>
 
             <div class="options-panel">
@@ -240,18 +257,18 @@
             <div style="text-align: center;">
                 <div style="font-size: 32px;">⚙️</div>
                 <div class="title-main" style="font-size: 32px;">MISSION PRESETS</div>
-                <div class="subtitle">WEATHER, BUILDINGS & DIFFICULTY</div>
+                <div class="subtitle">DIFFICULTY, GHOST WEATHER & 3-FLOOR INTERIORS</div>
             </div>
 
             <div class="options-panel">
                 <div class="option-row">
                     <span>💀 Difficulty Mode:</span>
                     <select id="diff-select">
-                        <option value="easy">Easy</option>
-                        <option value="normal" selected>Normal</option>
-                        <option value="hard">Hard</option>
-                        <option value="extreme">Extreme Hard</option>
-                        <option value="impossible">Impossible (Deathly)</option>
+                        <option value="easy">Easy (Slow Ghost)</option>
+                        <option value="normal" selected>Normal (Balanced Ghost)</option>
+                        <option value="hard">Hard (Fast Ghost)</option>
+                        <option value="extreme">Extreme Hard (Very Fast Ghost)</option>
+                        <option value="impossible">Impossible (Max Speed + Map Shuffle)</option>
                     </select>
                 </div>
                 <div class="option-row">
@@ -267,7 +284,7 @@
                 <div class="option-row">
                     <span>🏢 Building Interior Preset:</span>
                     <select id="preset-select">
-                        <option value="1" selected>Preset 1: North District Mega Halls</option>
+                        <option value="1" selected>Preset 1: North District 3-Floor Halls</option>
                         <option value="2">Preset 2: East Wing Multi-Floor</option>
                         <option value="3">Preset 3: South Tower Complex</option>
                         <option value="4">Preset 4: West Sector Haunted Base</option>
@@ -290,22 +307,25 @@
         <div class="hud-top-left" id="key-hud">
             <span>🔑 Key: <b id="key-status">SEARCHING...</b></span>
             <span>| 🪙 <b id="coin-cnt">0</b></span>
+            <span>| Floor: <b id="floor-label">Ground</b></span>
             <span>| <b id="bike-status">On Vehicle</b></span>
             <span>| 👻 Weather: <b id="weather-label">Night</b></span>
             <button class="hud-weather-btn" id="btn-cycle-weather" title="Change Ghost Weather (G)">Change Weather</button>
         </div>
-        <div class="hud-top-right">DIPU REMAKE 2026</div>
+        <div class="hud-top-right">DIPESH MEENA REMAKE</div>
         <div id="event-alert">👻 GHOST WEATHER SHIFTED! 👻</div>
 
-        <!-- MOBILE RIGHT-SIDE CONTROLS: UP/DOWN + LEFT/RIGHT -->
+        <!-- MOBILE CONTROLS: LEFT = UP/DOWN, RIGHT = LEFT/RIGHT -->
         <div id="mobile-controls">
-            <div class="mobile-cluster">
-                <button class="m-btn m-btn-small m-btn-weather" id="m-weather" title="Ghost Weather">WEATHER</button>
-                <button class="m-btn m-btn-small m-btn-bike" id="m-bike" title="Sit / Dismount">BIKE</button>
+            <div class="mobile-side-left">
                 <button class="m-btn" id="m-up" aria-label="Up">▲</button>
                 <button class="m-btn" id="m-down" aria-label="Down">▼</button>
             </div>
-            <div class="mobile-cluster">
+            <div class="mobile-side-right">
+                <div class="mobile-action-row">
+                    <button class="m-btn m-btn-small m-btn-weather" id="m-weather" title="Ghost Weather">WEATHER</button>
+                    <button class="m-btn m-btn-small m-btn-bike" id="m-bike" title="Sit / Dismount">BIKE</button>
+                </div>
                 <div class="mobile-lr-row">
                     <button class="m-btn" id="m-left" aria-label="Left">◀</button>
                     <button class="m-btn" id="m-right" aria-label="Right">▶</button>
@@ -318,13 +338,16 @@
         let totalCoins = 0;
         let selectedVehicle = 'default';
         let selectedPreset = '1';
+        let selectedDifficulty = 'normal';
         let gameActive = false;
         let hasKey = false;
-        let enemySpeed = 0.14;
+        let enemySpeed = 0.12;
         let isOnVehicle = true;
 
         const weatherOrder = ['morning', 'evening', 'night', 'snow', 'spring'];
         let currentWeatherIndex = 2; // 'night'
+        let autoWeatherTimer = 0;
+        let impossibleShuffleTimer = 0;
 
         const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
@@ -349,7 +372,6 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Enhanced Sky/Ground Hemisphere + Sun + Player Lantern
         const hemiLight = new THREE.HemisphereLight(0x6366f1, 0x1e293b, 0.9);
         scene.add(hemiLight);
 
@@ -370,9 +392,10 @@
         dynamicSun.shadow.camera.bottom = -dShadow;
         scene.add(dynamicSun);
 
-        // Ground & Road Grid Detail
-        const groundMat = new THREE.MeshStandardMaterial({ color: 0x1c2526, roughness: 0.85, metalness: 0.08 });
-        const ground = new THREE.Mesh(new THREE.PlaneGeometry(4000, 4000), groundMat);
+        const ground = new THREE.Mesh(
+            new THREE.PlaneGeometry(4000, 4000),
+            new THREE.MeshStandardMaterial({ color: 0x1c2526, roughness: 0.85, metalness: 0.08 })
+        );
         ground.rotation.x = -Math.PI / 2;
         ground.receiveShadow = true;
         scene.add(ground);
@@ -383,7 +406,7 @@
         gridHelper.material.opacity = 0.22;
         scene.add(gridHelper);
 
-        // --- SNOW PARTICLES SYSTEM ---
+        // --- SNOW PARTICLES ---
         const snowCount = 1800;
         const snowPositions = new Float32Array(snowCount * 3);
         for (let i = 0; i < snowCount; i++) {
@@ -393,26 +416,23 @@
         }
         const snowGeo = new THREE.BufferGeometry();
         snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPositions, 3));
-        const snowMat = new THREE.PointsMaterial({
-            color: 0xffffff,
-            size: 1.35,
-            transparent: true,
-            opacity: 0.88
-        });
+        const snowMat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.35, transparent: true, opacity: 0.88 });
         const snowPoints = new THREE.Points(snowGeo, snowMat);
         snowPoints.visible = false;
         scene.add(snowPoints);
 
-        // --- COLORFUL ENTERABLE BUILDINGS (WITH OPEN DOORWAYS & INTERIOR ROOMS) ---
-        // Each wall segment is stored as an AABB collider so you can enter through the open doorway and walk inside!
+        // --- COLORFUL BUILDINGS WITH 1ST, 2ND & 3RD FLOORS + WALKABLE RAMPS ---
         const wallColliders = [];
+        const floorDecks = []; // { minX, maxX, minZ, maxZ, topY, floorNum }
+        const rampObjects = []; // { minX, maxX, minZ, maxZ, startY, endY, axis }
+
         const buildingPalettes = [
-            { wall: 0xef4444, trim: 0xfca5a5, floor: 0x450a0a, window: 0xfef08a }, // Vibrant Coral Red
-            { wall: 0x06b6d4, trim: 0x67e8f9, floor: 0x083344, window: 0xfef9c3 }, // Bright Cyan Teal
-            { wall: 0xf59e0b, trim: 0xfde68a, floor: 0x451a03, window: 0xfffbeb }, // Warm Amber Gold
-            { wall: 0xa855f7, trim: 0xd8b4fe, floor: 0x2e1065, window: 0xf5d0fe }, // Royal Purple
-            { wall: 0x10b981, trim: 0x6ee7b7, floor: 0x022c22, window: 0xd9f99d }, // Emerald Green
-            { wall: 0xec4899, trim: 0xf9a8d4, floor: 0x500724, window: 0xfef08a }  // Magenta Pink
+            { wall: 0xef4444, trim: 0xfca5a5, f1: 0x7f1d1d, f2: 0x991b1b, f3: 0xb91c1c, window: 0xfef08a },
+            { wall: 0x06b6d4, trim: 0x67e8f9, f1: 0x164e63, f2: 0x155e75, f3: 0x0e7490, window: 0xfef9c3 },
+            { wall: 0xf59e0b, trim: 0xfde68a, f1: 0x78350f, f2: 0x92400e, f3: 0xb45309, window: 0xfffbeb },
+            { wall: 0xa855f7, trim: 0xd8b4fe, f1: 0x4c1d95, f2: 0x5b21b6, f3: 0x6d28d9, window: 0xf5d0fe },
+            { wall: 0x10b981, trim: 0x6ee7b7, f1: 0x064e3b, f2: 0x065f46, f3: 0x047857, window: 0xd9f99d },
+            { wall: 0xec4899, trim: 0xf9a8d4, f1: 0x831843, f2: 0x9d174d, f3: 0xbe185d, window: 0xfef08a }
         ];
 
         function addWallBox(minX, maxX, minZ, maxZ, height, material) {
@@ -427,14 +447,63 @@
             wallColliders.push({ minX, maxX, minZ, maxZ });
         }
 
-        function createEnterableColorfulBuilding(cx, cz, size, height, palette, doorSideIndex) {
-            const half = size / 2;
-            const wallThick = 3.2;
-            const doorHalfWidth = 6.5; // Wide doorway so both bike & character can enter easily
+        function addFloorSlab(cx, cz, size, yPos, colorHex, floorNum) {
+            const thick = 0.8;
+            const slab = new THREE.Mesh(
+                new THREE.BoxGeometry(size - 2, thick, size - 2),
+                new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.65, metalness: 0.1 })
+            );
+            slab.position.set(cx, yPos - thick / 2, cz);
+            slab.receiveShadow = true;
+            slab.castShadow = true;
+            scene.add(slab);
 
-            const wallMat = new THREE.MeshStandardMaterial({ color: palette.wall, roughness: 0.42, metalness: 0.12 });
+            floorDecks.push({
+                minX: cx - size / 2 + 1,
+                maxX: cx + size / 2 - 1,
+                minZ: cz - size / 2 + 1,
+                maxZ: cz + size / 2 - 1,
+                topY: yPos,
+                floorNum
+            });
+        }
+
+        function addRampBetweenFloors(x, z, length, width, startY, endY, colorHex) {
+            const rise = endY - startY;
+            const slopeLen = Math.hypot(length, rise);
+            const angle = Math.atan2(rise, length);
+
+            const ramp = new THREE.Mesh(
+                new THREE.BoxGeometry(width, 0.5, slopeLen),
+                new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.55 })
+            );
+            ramp.position.set(x, (startY + endY) / 2, z);
+            ramp.rotation.x = -angle;
+            ramp.castShadow = true;
+            ramp.receiveShadow = true;
+            scene.add(ramp);
+
+            rampObjects.push({
+                minX: x - width / 2,
+                maxX: x + width / 2,
+                minZ: z - length / 2,
+                maxZ: z + length / 2,
+                startY,
+                endY
+            });
+        }
+
+        function createMultiFloorBuilding(cx, cz, size, palette, doorSideIndex) {
+            const half = size / 2;
+            const wallThick = 3.0;
+            const doorHalfWidth = 7.0;
+            const f1Height = 7.5;
+            const f2Height = 15.0;
+            const f3Height = 22.5;
+            const totalHeight = 30.0;
+
+            const wallMat = new THREE.MeshStandardMaterial({ color: palette.wall, roughness: 0.4, metalness: 0.12 });
             const trimMat = new THREE.MeshStandardMaterial({ color: palette.trim, roughness: 0.35, metalness: 0.2 });
-            const floorMat = new THREE.MeshStandardMaterial({ color: palette.floor, roughness: 0.75 });
             const winMat = new THREE.MeshStandardMaterial({
                 color: palette.window,
                 emissive: palette.window,
@@ -442,85 +511,86 @@
                 roughness: 0.2
             });
 
-            // Interior floor pad
-            const floor = new THREE.Mesh(new THREE.BoxGeometry(size - 1, 0.35, size - 1), floorMat);
-            floor.position.set(cx, 0.18, cz);
-            floor.receiveShadow = true;
-            scene.add(floor);
+            // Floor 1 (Ground interior), Floor 2 (1st upper floor), Floor 3 (2nd upper floor)
+            addFloorSlab(cx, cz, size, 0.35, palette.f1, 1);
+            addFloorSlab(cx, cz, size, f1Height, palette.f2, 2);
+            addFloorSlab(cx, cz, size, f2Height, palette.f3, 3);
 
-            // Roof canopy with central skylight opening so you see inside clearly too
-            const roofFrameThick = 9;
-            // Front/Back/Left/Right roof bands
+            // Ramps connecting Ground -> Floor 2 -> Floor 3 inside the building
+            addRampBetweenFloors(cx - 10, cz - 6, 14, 5.5, 0.35, f1Height, palette.trim);
+            addRampBetweenFloors(cx + 10, cz + 6, 14, 5.5, f1Height, f2Height, palette.trim);
+
+            // Roof canopy with central opening so camera sees inside clearly
+            const roofFrameThick = 9.5;
             const roofNorth = new THREE.Mesh(new THREE.BoxGeometry(size + 1.5, 1.4, roofFrameThick), trimMat);
-            roofNorth.position.set(cx, height + 0.5, cz - half + roofFrameThick / 2);
+            roofNorth.position.set(cx, totalHeight + 0.5, cz - half + roofFrameThick / 2);
             roofNorth.castShadow = true;
             scene.add(roofNorth);
 
             const roofSouth = new THREE.Mesh(new THREE.BoxGeometry(size + 1.5, 1.4, roofFrameThick), trimMat);
-            roofSouth.position.set(cx, height + 0.5, cz + half - roofFrameThick / 2);
+            roofSouth.position.set(cx, totalHeight + 0.5, cz + half - roofFrameThick / 2);
             roofSouth.castShadow = true;
             scene.add(roofSouth);
 
             const roofWest = new THREE.Mesh(new THREE.BoxGeometry(roofFrameThick, 1.4, size - roofFrameThick * 2), trimMat);
-            roofWest.position.set(cx - half + roofFrameThick / 2, height + 0.5, cz);
+            roofWest.position.set(cx - half + roofFrameThick / 2, totalHeight + 0.5, cz);
             roofWest.castShadow = true;
             scene.add(roofWest);
 
             const roofEast = new THREE.Mesh(new THREE.BoxGeometry(roofFrameThick, 1.4, size - roofFrameThick * 2), trimMat);
-            roofEast.position.set(cx + half - roofFrameThick / 2, height + 0.5, cz);
+            roofEast.position.set(cx + half - roofFrameThick / 2, totalHeight + 0.5, cz);
             roofEast.castShadow = true;
             scene.add(roofEast);
 
-            // 4 sides: 0 = South (+Z), 1 = North (-Z), 2 = East (+X), 3 = West (-X)
-            const sides = [0, 1, 2, 3];
-            sides.forEach((s) => {
+            // Outer walls with doorway opening
+            for (let s = 0; s < 4; s++) {
                 const hasDoor = (s === doorSideIndex);
                 if (s === 0) {
                     const zMin = cz + half - wallThick;
                     const zMax = cz + half;
                     if (!hasDoor) {
-                        addWallBox(cx - half, cx + half, zMin, zMax, height, wallMat);
+                        addWallBox(cx - half, cx + half, zMin, zMax, totalHeight, wallMat);
                     } else {
-                        addWallBox(cx - half, cx - doorHalfWidth, zMin, zMax, height, wallMat);
-                        addWallBox(cx + doorHalfWidth, cx + half, zMin, zMax, height, wallMat);
+                        addWallBox(cx - half, cx - doorHalfWidth, zMin, zMax, totalHeight, wallMat);
+                        addWallBox(cx + doorHalfWidth, cx + half, zMin, zMax, totalHeight, wallMat);
                     }
                 } else if (s === 1) {
                     const zMin = cz - half;
                     const zMax = cz - half + wallThick;
                     if (!hasDoor) {
-                        addWallBox(cx - half, cx + half, zMin, zMax, height, wallMat);
+                        addWallBox(cx - half, cx + half, zMin, zMax, totalHeight, wallMat);
                     } else {
-                        addWallBox(cx - half, cx - doorHalfWidth, zMin, zMax, height, wallMat);
-                        addWallBox(cx + doorHalfWidth, cx + half, zMin, zMax, height, wallMat);
+                        addWallBox(cx - half, cx - doorHalfWidth, zMin, zMax, totalHeight, wallMat);
+                        addWallBox(cx + doorHalfWidth, cx + half, zMin, zMax, totalHeight, wallMat);
                     }
                 } else if (s === 2) {
                     const xMin = cx + half - wallThick;
                     const xMax = cx + half;
                     if (!hasDoor) {
-                        addWallBox(xMin, xMax, cz - half + wallThick, cz + half - wallThick, height, wallMat);
+                        addWallBox(xMin, xMax, cz - half + wallThick, cz + half - wallThick, totalHeight, wallMat);
                     } else {
-                        addWallBox(xMin, xMax, cz - half + wallThick, cz - doorHalfWidth, height, wallMat);
-                        addWallBox(xMin, xMax, cz + doorHalfWidth, cz + half - wallThick, height, wallMat);
+                        addWallBox(xMin, xMax, cz - half + wallThick, cz - doorHalfWidth, totalHeight, wallMat);
+                        addWallBox(xMin, xMax, cz + doorHalfWidth, cz + half - wallThick, totalHeight, wallMat);
                     }
                 } else if (s === 3) {
                     const xMin = cx - half;
                     const xMax = cx - half + wallThick;
                     if (!hasDoor) {
-                        addWallBox(xMin, xMax, cz - half + wallThick, cz + half - wallThick, height, wallMat);
+                        addWallBox(xMin, xMax, cz - half + wallThick, cz + half - wallThick, totalHeight, wallMat);
                     } else {
-                        addWallBox(xMin, xMax, cz - half + wallThick, cz - doorHalfWidth, height, wallMat);
-                        addWallBox(xMin, xMax, cz + doorHalfWidth, cz + half - wallThick, height, wallMat);
+                        addWallBox(xMin, xMax, cz - half + wallThick, cz - doorHalfWidth, totalHeight, wallMat);
+                        addWallBox(xMin, xMax, cz + doorHalfWidth, cz + half - wallThick, totalHeight, wallMat);
                     }
                 }
-            });
+            }
 
-            // Glowing window accents on outer walls
-            for (let wy = 7; wy <= height - 6; wy += 11) {
-                const winFront = new THREE.Mesh(new THREE.BoxGeometry(3.2, 2.4, 0.4), winMat);
+            // Windows across all 3 levels
+            for (let wy = 5; wy <= 24; wy += 8.5) {
+                const winFront = new THREE.Mesh(new THREE.BoxGeometry(3.2, 2.2, 0.4), winMat);
                 winFront.position.set(cx - half * 0.65, wy, cz + half + 0.15);
                 scene.add(winFront);
 
-                const winBack = new THREE.Mesh(new THREE.BoxGeometry(3.2, 2.4, 0.4), winMat);
+                const winBack = new THREE.Mesh(new THREE.BoxGeometry(3.2, 2.2, 0.4), winMat);
                 winBack.position.set(cx + half * 0.65, wy, cz - half - 0.15);
                 scene.add(winBack);
             }
@@ -531,23 +601,20 @@
             for (let z = -240; z <= 240; z += 120) {
                 if (Math.abs(x) > 30 || Math.abs(z) > 30) {
                     const pal = buildingPalettes[paletteIdx % buildingPalettes.length];
-                    const h = 24 + ((paletteIdx * 7) % 16);
-                    createEnterableColorfulBuilding(x, z, 48, h, pal, paletteIdx % 4);
+                    createMultiFloorBuilding(x, z, 52, pal, paletteIdx % 4);
                     paletteIdx++;
                 }
             }
         }
 
-        // --- TREES AROUND MAP & STREETS ---
-        const foliageMeshes = [];
+        // --- TREES ---
         const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5c3a21, roughness: 0.9 });
         const leafColors = [0x16a34a, 0x22c55e, 0x15803d, 0x4ade80, 0xf97316];
 
         function addTree(x, z, scale = 1) {
-            // Avoid placing tree right on top of a wall or spawn point
             if (Math.hypot(x, z - 20) < 14) return;
             for (const w of wallColliders) {
-                if (x > w.minX - 4 && x < w.maxX + 4 && z > w.minZ - 4 && z < w.maxZ + 4) {
+                if (x > w.minX - 4.5 && x < w.maxX + 4.5 && z > w.minZ - 4.5 && z < w.maxZ + 4.5) {
                     return;
                 }
             }
@@ -578,9 +645,7 @@
 
             tree.position.set(x, 0, z);
             scene.add(tree);
-            foliageMeshes.push({ leafMat, baseColor: leafMat.color.getHex() });
 
-            // Trunk collider
             wallColliders.push({
                 minX: x - 0.9 * scale,
                 maxX: x + 0.9 * scale,
@@ -589,22 +654,28 @@
             });
         }
 
-        for (let i = 0; i < 65; i++) {
-            const angle = (i / 65) * Math.PI * 2 + (i % 5) * 0.15;
-            const radius = 38 + ((i * 29) % 245);
-            const tx = Math.cos(angle) * radius;
-            const tz = Math.sin(angle) * radius;
-            const sc = 0.85 + ((i % 4) * 0.22);
-            addTree(tx, tz, sc);
+        for (let i = 0; i < 60; i++) {
+            const angle = (i / 60) * Math.PI * 2 + (i % 5) * 0.15;
+            const radius = 40 + ((i * 29) % 245);
+            addTree(Math.cos(angle) * radius, Math.sin(angle) * radius, 0.85 + ((i % 4) * 0.22));
         }
 
-        // --- GOLDEN KEY PRESETS (INCLUDING INSIDE A BUILDING) ---
+        // --- GOLDEN KEY PRESETS (GROUND, 2ND FLOOR & 3RD FLOOR) ---
         const keyPresets = [
-            {x: 120, y: 2.2, z: -120}, {x: -120, y: 2.2, z: 120}, {x: 120, y: 2.2, z: 120},
-            {x: -120, y: 2.2, z: -120}, {x: 60, y: 2.2, z: -180}, {x: -180, y: 2.2, z: 60},
-            {x: 150, y: 2.2, z: 40}, {x: -150, y: 2.2, z: -40}, {x: 0, y: 2.2, z: 165}, {x: -165, y: 2.2, z: 0}
+            {x: 120, y: 2.0, z: -120},
+            {x: -120, y: 9.0, z: 120},
+            {x: 120, y: 16.5, z: 120},
+            {x: -120, y: 2.0, z: -120},
+            {x: 120, y: 9.0, z: 0},
+            {x: -120, y: 16.5, z: 0},
+            {x: 0, y: 9.0, z: 120},
+            {x: 0, y: 16.5, z: -120}
         ];
-        const chosenPreset = keyPresets[Math.floor(Math.random() * keyPresets.length)];
+
+        function placeKeyRandomly() {
+            const p = keyPresets[Math.floor(Math.random() * keyPresets.length)];
+            keyGroup.position.set(p.x, p.y, p.z);
+        }
 
         const keyGroup = new THREE.Group();
         const keyHead = new THREE.Mesh(
@@ -613,11 +684,9 @@
         );
         keyHead.castShadow = true;
         keyGroup.add(keyHead);
-
         const keyLight = new THREE.PointLight(0xffd700, 2.2, 22);
         keyGroup.add(keyLight);
-
-        keyGroup.position.set(chosenPreset.x, chosenPreset.y, chosenPreset.z);
+        placeKeyRandomly();
         scene.add(keyGroup);
 
         // --- PLAYER / VEHICLE & CHARACTER ---
@@ -656,7 +725,7 @@
         playerGroup.position.set(0, 0, 20);
         scene.add(playerGroup);
 
-        // --- ENEMY ---
+        // --- ENEMY (GHOST) ---
         const enemyGroup = new THREE.Group();
         const enemyBody = new THREE.Mesh(
             new THREE.BoxGeometry(1.5, 3.2, 1.3),
@@ -677,8 +746,8 @@
         enemyGroup.position.set(0, 0, -180);
         scene.add(enemyGroup);
 
-        // --- GHOST WEATHER SYSTEM (MORNING, EVENING, NIGHT, SNOW, SPRING) ---
-        function applyGhostWeather(mode, showAlert = true) {
+        // --- GHOST WEATHER SYSTEM ---
+        function applyGhostWeather(mode, showAlert = true, isAuto = false) {
             const labelEl = document.getElementById('weather-label');
             snowPoints.visible = false;
             ground.material.color.setHex(0x1c2526);
@@ -748,7 +817,9 @@
 
             if (showAlert && gameActive) {
                 const alertBox = document.getElementById('event-alert');
-                alertBox.innerText = `👻 GHOST WEATHER: ${labelEl.innerText.toUpperCase()}! 👻`;
+                alertBox.innerText = isAuto
+                    ? `👻 GHOST AUTO-CHANGED WEATHER: ${labelEl.innerText.toUpperCase()}! 👻`
+                    : `👻 GHOST WEATHER: ${labelEl.innerText.toUpperCase()}! 👻`;
                 alertBox.style.display = 'block';
                 clearTimeout(window.__weatherAlertTimer);
                 window.__weatherAlertTimer = setTimeout(() => {
@@ -757,12 +828,12 @@
             }
         }
 
-        function cycleGhostWeather() {
+        function cycleGhostWeather(isAuto = false) {
             currentWeatherIndex = (currentWeatherIndex + 1) % weatherOrder.length;
-            applyGhostWeather(weatherOrder[currentWeatherIndex], true);
+            applyGhostWeather(weatherOrder[currentWeatherIndex], true, isAuto);
         }
 
-        applyGhostWeather(weatherOrder[currentWeatherIndex], false);
+        applyGhostWeather(weatherOrder[currentWeatherIndex], false, false);
 
         function applyBikeAppearance() {
             let bikeColor = 0xff0000;
@@ -799,21 +870,22 @@
         });
 
         document.getElementById('btn-start-mission').addEventListener('click', async () => {
-            const diff = document.getElementById('diff-select').value;
+            selectedDifficulty = document.getElementById('diff-select').value;
             const chosenWeather = document.getElementById('weather-select').value;
             selectedPreset = document.getElementById('preset-select').value;
             selectedVehicle = document.getElementById('garage-select').value;
 
-            if (diff === 'easy') enemySpeed = 0.08;
-            if (diff === 'normal') enemySpeed = 0.12;
-            if (diff === 'hard') enemySpeed = 0.17;
-            if (diff === 'extreme') enemySpeed = 0.22;
-            if (diff === 'impossible') enemySpeed = 0.28;
+            // Ghost speed scales clearly with difficulty
+            if (selectedDifficulty === 'easy') enemySpeed = 0.08;
+            if (selectedDifficulty === 'normal') enemySpeed = 0.14;
+            if (selectedDifficulty === 'hard') enemySpeed = 0.21;
+            if (selectedDifficulty === 'extreme') enemySpeed = 0.29;
+            if (selectedDifficulty === 'impossible') enemySpeed = 0.38;
 
             const wIdx = weatherOrder.indexOf(chosenWeather);
             if (wIdx !== -1) {
                 currentWeatherIndex = wIdx;
-                applyGhostWeather(chosenWeather, false);
+                applyGhostWeather(chosenWeather, false, false);
             }
 
             if (selectedVehicle === 'foot') {
@@ -828,6 +900,9 @@
                 charMesh.visible = false;
                 document.getElementById('bike-status').innerText = "On Vehicle";
             }
+
+            autoWeatherTimer = 0;
+            impossibleShuffleTimer = 0;
 
             document.getElementById('options-screen').style.display = 'none';
             document.getElementById('hud').style.display = 'block';
@@ -845,10 +920,10 @@
 
         document.getElementById('btn-cycle-weather').addEventListener('click', (e) => {
             e.stopPropagation();
-            cycleGhostWeather();
+            cycleGhostWeather(false);
         });
 
-        // --- CONTROLS (PC KEYBOARD + MOBILE RIGHT-SIDE TOUCH BUTTONS) ---
+        // --- CONTROLS: PC KEYBOARD + MOBILE (LEFT: UP/DOWN, RIGHT: LEFT/RIGHT) ---
         const keys = { up: false, down: false, left: false, right: false };
 
         window.addEventListener('keydown', (e) => {
@@ -862,7 +937,7 @@
                 toggleVehicleState();
             }
             if (k === 'g') {
-                cycleGhostWeather();
+                cycleGhostWeather(false);
             }
         });
 
@@ -892,6 +967,7 @@
             el.addEventListener('pointerleave', release);
         }
 
+        // Left side: Up & Down | Right side: Left & Right
         bindHoldButton('m-up', 'up');
         bindHoldButton('m-down', 'down');
         bindHoldButton('m-left', 'left');
@@ -904,8 +980,35 @@
 
         document.getElementById('m-weather').addEventListener('pointerdown', (ev) => {
             ev.preventDefault();
-            cycleGhostWeather();
+            cycleGhostWeather(false);
         });
+
+        function getElevationAt(x, z, currentY) {
+            let bestY = 0;
+            let floorLabel = 'Ground';
+
+            for (const f of floorDecks) {
+                if (x >= f.minX && x <= f.maxX && z >= f.minZ && z <= f.maxZ) {
+                    if (currentY + 2.2 >= f.topY && f.topY >= bestY) {
+                        bestY = f.topY;
+                        floorLabel = `Floor ${f.floorNum}`;
+                    }
+                }
+            }
+
+            for (const r of rampObjects) {
+                if (x >= r.minX && x <= r.maxX && z >= r.minZ && z <= r.maxZ) {
+                    const t = Math.min(1, Math.max(0, (z - r.minZ) / (r.maxZ - r.minZ)));
+                    const rampY = r.startY + (r.endY - r.startY) * t;
+                    if (rampY > bestY) {
+                        bestY = rampY;
+                        floorLabel = 'Ramp';
+                    }
+                }
+            }
+
+            return { y: bestY, label: floorLabel };
+        }
 
         // --- GAME LOOP ---
         let playerYaw = 0;
@@ -927,7 +1030,37 @@
             }
 
             if (gameActive) {
-                const moveSpeed = isOnVehicle ? 0.58 : 0.26;
+                // Ghost automatically changes weather periodically
+                autoWeatherTimer++;
+                if (autoWeatherTimer >= 540) { // ~9 seconds at 60fps
+                    autoWeatherTimer = 0;
+                    cycleGhostWeather(true);
+                }
+
+                // In Impossible mode, Ghost shuffles the map (key & enemy positions) periodically
+                if (selectedDifficulty === 'impossible') {
+                    impossibleShuffleTimer++;
+                    if (impossibleShuffleTimer >= 720) { // ~12 seconds
+                        impossibleShuffleTimer = 0;
+                        if (!hasKey) placeKeyRandomly();
+                        const angle = Math.random() * Math.PI * 2;
+                        const distFromPlayer = 75 + Math.random() * 85;
+                        enemyGroup.position.set(
+                            playerGroup.position.x + Math.cos(angle) * distFromPlayer,
+                            0,
+                            playerGroup.position.z + Math.sin(angle) * distFromPlayer
+                        );
+                        const alertBox = document.getElementById('event-alert');
+                        alertBox.innerText = '🔥 IMPOSSIBLE MODE: GHOST SHUFFLED THE MAP! 🔥';
+                        alertBox.style.display = 'block';
+                        clearTimeout(window.__weatherAlertTimer);
+                        window.__weatherAlertTimer = setTimeout(() => {
+                            alertBox.style.display = 'none';
+                        }, 1800);
+                    }
+                }
+
+                const moveSpeed = isOnVehicle ? 0.58 : 0.27;
                 const turnSpeed = isOnVehicle ? 0.045 : 0.05;
 
                 if (keys.left) playerYaw += turnSpeed;
@@ -955,6 +1088,10 @@
                     playerGroup.position.z = nextZ;
                 }
 
+                const elev = getElevationAt(playerGroup.position.x, playerGroup.position.z, playerGroup.position.y);
+                playerGroup.position.y += (elev.y - playerGroup.position.y) * 0.28;
+                document.getElementById('floor-label').innerText = elev.label;
+
                 // Collect Golden Key
                 if (!hasKey && playerGroup.position.distanceTo(keyGroup.position) < 6.5) {
                     hasKey = true;
@@ -966,7 +1103,7 @@
                     gameActive = false;
                 }
 
-                // Enemy chases player
+                // Enemy chases player at difficulty-scaled speed
                 const dx = playerGroup.position.x - enemyGroup.position.x;
                 const dz = playerGroup.position.z - enemyGroup.position.z;
                 const dist = Math.hypot(dx, dz);
@@ -978,12 +1115,12 @@
 
                 // Follow camera
                 const camDist = isOnVehicle ? 9 : 6.5;
-                const camHeight = isOnVehicle ? 4.5 : 3.6;
+                const camHeight = playerGroup.position.y + (isOnVehicle ? 4.5 : 3.6);
                 const targetCamX = playerGroup.position.x - Math.sin(playerYaw) * camDist;
                 const targetCamZ = playerGroup.position.z - Math.cos(playerYaw) * camDist;
 
                 camera.position.lerp(new THREE.Vector3(targetCamX, camHeight, targetCamZ), 0.12);
-                camera.lookAt(playerGroup.position.x, 1.8, playerGroup.position.z);
+                camera.lookAt(playerGroup.position.x, playerGroup.position.y + 1.8, playerGroup.position.z);
             } else {
                 camera.position.set(0, 8, 32);
                 camera.lookAt(0, 1.5, 20);
